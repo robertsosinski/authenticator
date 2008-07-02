@@ -1,7 +1,7 @@
 require 'digest/sha2'
 
 class Account < ActiveRecord::Base
-  attr_reader :password
+  attr_accessor :password
   
   ENCRYPT = Digest::SHA256
   
@@ -12,13 +12,13 @@ class Account < ActiveRecord::Base
                       :message => "must be valid (e.g. name@domain.com)"
   
   validates_format_of :password, :with => /^([\x20-\x7E]){6,}$/,
-                      :unless => :password_is_not_being_updated,
+                      :unless => :skip_password_encryption_and_validation?,
                       :message => "must be six or more characters"
   
   validates_confirmation_of :password,
                             :message => 'must match Password Confirmation'
   
-  after_save :flush_passwords
+  after_validation :flush_passwords
   
   def self.find_by_credentials(credentials)
     account = self.find_by_email_address(credentials[:email_address])
@@ -28,21 +28,21 @@ class Account < ActiveRecord::Base
   end
   
   def password=(password)
-    @password = password
-    unless password_is_not_being_updated
+    @password = password ||= ''
+    unless skip_password_encryption_and_validation?
       self.salt = [Array.new(6){rand(256).chr}.join].pack('m').chomp
       self.encrypted_password = ENCRYPT.hexdigest(password + self.salt)
     end
   end
   
-  def verify_password(password)
+  def password_is?(password)
     ENCRYPT.hexdigest(password + self.salt) == self.encrypted_password
   end
   
   private
   
-  def password_is_not_being_updated
-    ! self.new_record? and self.password.blank?
+  def skip_password_encryption_and_validation?
+    self.id and self.password.blank?
   end
     
   def flush_passwords

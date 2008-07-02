@@ -1,11 +1,11 @@
-robert:
-  email_address: robert@capansis.com
+alice:
+  email_address: alice@capansis.com
   salt: a6QtZhwo
-  # password: beast
-  encrypted_password: d2868ca380be61a209d8c8ae7db60a3dd145d7ac1f37cfd3386cb84018a1f101
+  # password: secret
+  encrypted_password: b572d924274989fa4d6bb336ea5d85bc3b33d2ea26a44400aeab029b7c9baddb
 
-bala:
-  email_address: bala@capansis.com
+bob:
+  email_address: bob@capansis.com
   salt: Gspan8T7
   # password: password
   encrypted_password: c17e56e040548ee6a829e11abd4f94860600e767a354055c8498990c78c9b2de
