@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
   def create
     @account = Account.new(params[:account])
     if @account.save
-      render :xml => @account, :status => :created, :location => 'hello world'
+      render :xml => @account, :status => :created, :location => @account
     else
       render :xml => @account.errors, :status => :unprocessable_entity
     end
@@ -25,10 +25,16 @@ class AccountsController < ApplicationController
   end
   
   def update
-    
+    @account = Account.find(params[:id])
+    if @account.update_attributes(params[:account])
+      head :ok
+    else
+      render :xml => @account.errors, :status => :unprocessable_entity
+    end
   end
   
   def destroy
-    
+    Account.destroy(params[:id])
+    head :ok
   end
 end

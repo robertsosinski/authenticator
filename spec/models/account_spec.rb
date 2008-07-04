@@ -137,6 +137,30 @@ describe Account do
         @account.password_confirmation.should be_nil
       end
     end
+    
+    describe 'with a blank password' do
+      before do
+        @account = Account.create({
+          :email_address => 'new.user@capansis.com',
+          :password => '',
+          :password_confirmation => ''
+        })
+      end
+      
+      it 'should be marked as invalid and not saved' do
+        @account.valid?.should be_false
+        @account.new_record?.should be_true
+      end
+      
+      it 'should yield errors' do
+        @account.errors.on(:password).should eql('must be six or more characters')
+      end
+      
+      it 'should flush plain text passwords' do
+        @account.password.should be_nil
+        @account.password_confirmation.should be_nil
+      end
+    end
   end
   
   describe 'when updated' do
@@ -163,6 +187,30 @@ describe Account do
           :password => nil,
           :password_confirmation => nil
         })
+      end
+      
+      it 'should change the email_address' do
+        @account.email_address.should eql('changed@capansis.com')
+      end
+      
+      it 'should not update the salt or encrypted_password attributes' do
+        @account.salt.should eql(accounts(:alice).salt)
+        @account.encrypted_password.should eql(accounts(:alice).encrypted_password)
+      end
+    end
+    
+    describe 'with a blank password' do
+      before do
+        @account = Account.find(accounts(:alice))
+        @account.update_attributes({
+          :email_address => 'changed@capansis.com',
+          :password => '',
+          :password_confirmation => ''
+        })
+      end
+      
+      it 'should change the email_address' do
+        @account.email_address.should eql('changed@capansis.com')
       end
       
       it 'should not update the salt or encrypted_password attributes' do

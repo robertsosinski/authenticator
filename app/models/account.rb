@@ -29,6 +29,7 @@ class Account < ActiveRecord::Base
   
   def password=(password)
     @password = password ||= ''
+    @password_confirmation ||= ''
     unless skip_password_encryption_and_validation?
       self.salt = [Array.new(6){rand(256).chr}.join].pack('m').chomp
       self.encrypted_password = ENCRYPT.hexdigest(password + self.salt)
