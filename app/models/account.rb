@@ -20,9 +20,9 @@ class Account < ActiveRecord::Base
   
   after_validation :flush_passwords
   
-  def self.find_by_credentials(credentials)
-    account = self.find_by_email_address(credentials[:email_address])
-    if account and account.encrypted_password == ENCRYPT.hexdigest(credentials[:password] + account.salt)
+  def self.find_by_email_address_and_password(email_address, password)
+    account = self.find_by_email_address(email_address)
+    if account and account.encrypted_password == ENCRYPT.hexdigest(password + account.salt)
       return account
     end
   end

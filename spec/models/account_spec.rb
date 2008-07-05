@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Account do
-  describe 'find_by_credentials method' do
+  describe 'find_by_email_address_and_password method' do
     describe 'when given valid credentials' do
       before do
         @credentials = {
@@ -11,7 +11,7 @@ describe Account do
       end
       
       it 'should return an Account matching the credentials' do
-        Account.find_by_credentials(@credentials).should eql(accounts(:alice))
+        Account.find_by_email_address_and_password(@credentials[:email_address], @credentials[:password]).should eql(accounts(:alice))
       end
     end
     
@@ -24,7 +24,7 @@ describe Account do
       end
       
       it 'should return nil' do
-        Account.find_by_credentials(@credentials).should be_nil
+        Account.find_by_email_address_and_password(@credentials[:email_address], @credentials[:password]).should be_nil
       end
     end
   end

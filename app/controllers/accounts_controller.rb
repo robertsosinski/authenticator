@@ -37,4 +37,8 @@ class AccountsController < ApplicationController
     Account.destroy(params[:id])
     head :ok
   end
+  
+  def login
+    
+  end
 end
