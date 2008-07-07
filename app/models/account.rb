@@ -5,6 +5,8 @@ class Account < ActiveRecord::Base
   
   ENCRYPT = Digest::SHA256
   
+  has_many :logins
+  
   validates_uniqueness_of :email_address,
                           :message => 'must be unique'
   

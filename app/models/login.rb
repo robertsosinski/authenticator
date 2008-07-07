@@ -12,5 +12,8 @@ class Login < ActiveRecord::Base
 	def authenticate_account
 	  self.password ||= ''
 		self.match = Account.find_by_email_address_and_password(self.email_address, self.password)
+		if self.match
+		  self.account_id ||= self.match.id
+	  end
 	end
 end

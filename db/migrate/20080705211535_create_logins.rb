@@ -3,7 +3,6 @@ class CreateLogins < ActiveRecord::Migration
     create_table :logins do |t|
       t.belongs_to :account
       t.datetime :created_at
-      t.datetime :destroyed_at
     end
   end
 

@@ -21,9 +21,8 @@ ActiveRecord::Schema.define(:version => 20080705211535) do
   end
 
   create_table "logins", :force => true do |t|
-    t.integer  "account_id",   :limit => 11
+    t.integer  "account_id", :limit => 11
     t.datetime "created_at"
-    t.datetime "destroyed_at"
   end
 
 end
