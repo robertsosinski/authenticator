@@ -17,7 +17,7 @@ class AccountsController < ApplicationController
       Mailer.deliver_activation(:verification_key => @account.verification_key,
                                 :email => @account.email_address,
                                 :domain => request.env['HTTP_HOST'])
-                              
+      
       render :xml => @account, :status => :created, :location => @account
     else
       render :xml => @account.errors, :status => :unprocessable_entity
@@ -25,8 +25,8 @@ class AccountsController < ApplicationController
   end
   
   def verify
-    # Important to check if the verification_key param is nil, else passing no verification_key through the API will let a user login as anyone!
-    if account = Account.find(params[:id], :conditions => {:verification_key => params[:verification_key]}) and params[:verification_key] != nil
+    account = Account.find_by_id_and_verification_key(params[:id], params[:verification_key])
+    if account
       if account.is_pending_activation?
         account.activate_and_clear_verification_key!
       end
@@ -65,8 +65,8 @@ class AccountsController < ApplicationController
     end
   end
   
-  def destroy
-    Account.destroy(params[:id])
-    head :ok
-  end
+  # def destroy
+  #   Account.destroy(params[:id])
+  #   head :ok
+  # end
 end

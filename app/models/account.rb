@@ -31,6 +31,14 @@ class Account < ActiveRecord::Base
     end
   end
   
+  def self.find_by_id_and_verification_key(id, verification_key)
+    ##
+    # It is very important to check if the verification_key is nil or else passing a nil
+    # for the verification_key through the API will allow an API user to login as anyone!!!
+    ##
+    verification_key.nil? ? nil : self.find(id, :conditions => {:verification_key => verification_key})
+  end
+  
   def password=(password)
     @password = password ||= ''
     @password_confirmation ||= ''
@@ -65,7 +73,7 @@ class Account < ActiveRecord::Base
   end
   
   def create_verification_key!
-    self.update_attribute(:verification_key, KeyGenerator.create(64))
+    self.update_attribute(:verification_key, KeyGenerator.create)
   end
   
   def clear_verification_key!
@@ -91,6 +99,6 @@ class Account < ActiveRecord::Base
   end
   
   def save_verification_key
-    self.verification_key = KeyGenerator.create(64)
+    self.verification_key = KeyGenerator.create
   end
 end

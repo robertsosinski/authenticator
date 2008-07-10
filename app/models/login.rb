@@ -6,6 +6,15 @@ class Login < ActiveRecord::Base
 	before_validation :authenticate_account
 	
 	validates_presence_of :match, :message => 'for your Email Address and Password could not be found'
+	
+	after_save :clear_verification_key_if_neccessary
+	
+  def validate
+    if self.match
+      errors.add_to_base "Your Account is not yet activated.  Please check your email inbox for your activation letter." if self.match.is_pending_activation?
+      errors.add_to_base "Your Account has been disabled. Please contact the site administrator for more information." if self.match.banned?
+    end
+  end
  
 	private
  
@@ -16,4 +25,8 @@ class Login < ActiveRecord::Base
 		  self.account_id ||= self.match.id
 	  end
 	end
+	
+	def clear_verification_key_if_neccessary
+	  self.match.ensure_verification_key_is_cleared!
+  end
 end
