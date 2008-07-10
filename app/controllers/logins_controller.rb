@@ -2,7 +2,7 @@ class LoginsController < ApplicationController
   def new
     render :xml => Login.new
   end
-    
+  
   def create
     @login = Login.new(params[:login])
     if @login.save
