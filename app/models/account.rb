@@ -43,25 +43,29 @@ class Account < ActiveRecord::Base
   def password_is?(password)
     ENCRYPT.hexdigest(password + self.salt) == self.encrypted_password
   end
-  
-  def inactive?
-    ! self.active?
-  end
-  
+    
   def activate!
-    self.update_attribute(:active, true)
+    self.update_attribute(:actived, true)
   end
   
-  def deactivate!
-    self.update_attribute(:active, false)
+  def ban!
+    self.update_attribute(:banned, true)
+  end
+  
+  def unban!
+    self.update_attribute(:banned, false)
   end
   
   def is_pending_activation?
-    self.inactive? and self.verification_key ? true : false
+    ! self.actived? and self.verification_key ? true : false
   end
   
   def is_pending_recovery?
-    self.active? and self.verification_key ? true : false
+    self.actived? and self.verification_key ? true : false
+  end
+  
+  def create_verification_key!
+    self.update_attribute(:verification_key, KeyGenerator.create(64))
   end
   
   def clear_verification_key!
@@ -73,7 +77,7 @@ class Account < ActiveRecord::Base
   end
   
   def activate_and_clear_verification_key!
-    self.update_attributes(:active => true, :verification_key => nil)
+    self.update_attributes(:actived => true, :verification_key => nil)
   end
   
   private

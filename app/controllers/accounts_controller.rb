@@ -14,6 +14,10 @@ class AccountsController < ApplicationController
   def create
     @account = Account.new(params[:account])
     if @account.save
+      Mailer.deliver_activation(:verification_key => @account.verification_key,
+                                :email => @account.email_address,
+                                :domain => request.env['HTTP_HOST'])
+                              
       render :xml => @account, :status => :created, :location => @account
     else
       render :xml => @account.errors, :status => :unprocessable_entity
@@ -21,14 +25,15 @@ class AccountsController < ApplicationController
   end
   
   def verify
-    if @account = Account.find(params[:id], :conditions => {:verification_key => params[:verification_key]})      
-      if @account.is_pending_activation?
-        @account.activate_and_clear_verification_key!
+    # Important to check if the verification_key param is nil, else passing no verification_key through the API will let a user login as anyone!
+    if account = Account.find(params[:id], :conditions => {:verification_key => params[:verification_key]}) and params[:verification_key] != nil
+      if account.is_pending_activation?
+        account.activate_and_clear_verification_key!
       end
-      if @account.is_pending_recovery?
-        @account.clear_verification_key!
+      if account.is_pending_recovery?
+        account.clear_verification_key!
       end
-      render :xml => @account, :status => :created, :location => @account
+      head :ok
     else
       head :not_found
     end
@@ -50,7 +55,7 @@ class AccountsController < ApplicationController
   def recover
     account = Account.find_by_email_address(params[:email_address])
     if account
-      account.update_attribute(:verification_key, KeyGenerator.create(64))
+      account.create_verification_key!
       Mailer.deliver_recovery(:verification_key => account.verification_key,
                               :email => account.email_address,
                               :domain => request.env['HTTP_HOST'])
