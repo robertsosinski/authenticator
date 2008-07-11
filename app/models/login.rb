@@ -11,8 +11,8 @@ class Login < ActiveRecord::Base
 	
   def validate
     if self.match
-      errors.add_to_base "Your Account is not yet activated.  Please check your email inbox for your activation letter." if self.match.is_pending_activation?
-      errors.add_to_base "Your Account has been disabled. Please contact the site administrator for more information." if self.match.banned?
+      errors.add_to_base "Your account is not yet activated.  Please check your email inbox for your activation letter." if self.match.is_pending_activation?
+      errors.add_to_base "Your account has been disabled. Please contact the site administrator for more information." if self.match.banned?
     end
   end
  

@@ -29,8 +29,7 @@ class AccountsController < ApplicationController
     if account
       if account.is_pending_activation?
         account.activate_and_clear_verification_key!
-      end
-      if account.is_pending_recovery?
+      else # account is pending recovery
         account.clear_verification_key!
       end
       head :ok
@@ -64,9 +63,4 @@ class AccountsController < ApplicationController
       head :not_found
     end
   end
-  
-  # def destroy
-  #   Account.destroy(params[:id])
-  #   head :ok
-  # end
 end
