@@ -1,31 +1,23 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Account do
-  describe 'find_by_email_address_and_password method' do
-    describe 'when given valid credentials' do
-      before do
-        @credentials = {
-          :email_address => 'alice@capansis.com',
-          :password => 'secret'
-        }
-      end
-      
+  describe 'self.find_by_email_address_and_password method' do
+    describe 'when given valid credentials' do    
       it 'should return an Account matching the credentials' do
-        Account.find_by_email_address_and_password(@credentials[:email_address], @credentials[:password]).should eql(accounts(:alice))
+        Account.find_by_email_address_and_password(accounts(:alice).email_address, 'secret').should eql(accounts(:alice))
       end
     end
     
     describe 'when given invalid credentials' do
-      before do
-        @credentials = {
-          :email_address => 'mallory@capansis.com',
-          :password => 'invalid'
-        }
-      end
-      
       it 'should return nil' do
-        Account.find_by_email_address_and_password(@credentials[:email_address], @credentials[:password]).should be_nil
+        Account.find_by_email_address_and_password('eve', 'invalid').should be_nil
       end
+    end
+  end
+  
+  describe 'self.find_by_id_and_verification_key method' do
+    it 'should work, but I have to check it in the controller' do
+      pending
     end
   end
   
