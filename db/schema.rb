@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(:version => 20080705211535) do
     t.string   "salt"
     t.string   "encrypted_password"
     t.string   "verification_key"
-    t.boolean  "actived",                          :default => false
+    t.boolean  "activated",                        :default => false
     t.boolean  "banned",                           :default => false
     t.datetime "created_at"
     t.datetime "updated_at"

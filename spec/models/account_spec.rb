@@ -43,6 +43,110 @@ describe Account do
     end
   end
   
+  describe 'is_pending_activation? method' do
+    describe 'on an account pending activation' do
+      before do
+        @account = Account.find(accounts(:bob))
+      end
+    
+      it 'should return true' do
+        @account.is_pending_activation?.should be_true
+      end
+    end
+    
+    describe 'on an account not pending activation' do
+      before do
+        @account = Account.find(accounts(:alice))
+      end
+      
+      it 'should return false' do
+        @account.is_pending_activation?.should be_false
+      end
+    end
+  end
+  
+  describe 'activate! method' do
+    before do
+      @account = Account.find(accounts(:bob))
+    end
+    
+    it 'should set the activated attribute to true' do
+      @account.activated?.should be_false
+      @account.activate!
+      @account.activated?.should be_true
+    end
+  end
+  
+  describe 'is_pending_recovery? method' do
+    describe 'on an account pending recovery' do
+      before do
+        @account = Account.find(accounts(:casey))
+      end
+    
+      it 'should return true' do
+        @account.is_pending_recovery?.should be_true
+      end
+    end
+    
+    describe 'on an account not pending recovery' do
+      before do
+        @account = Account.find(accounts(:alice))
+      end
+      
+      it 'should return false' do
+        @account.is_pending_recovery?.should be_false
+      end
+    end
+  end
+  
+  describe 'is_pending_recovery! method' do
+    before do
+      @account = Account.find(accounts(:alice))
+    end
+    
+    it 'should set an account account as pending recovery' do
+      @account.is_pending_recovery?.should be_false
+      @account.is_pending_recovery!
+      @account.is_pending_recovery?.should be_true
+    end
+  end
+  
+  describe 'is_not_pending_recovery! method' do
+    before do
+      @account = Account.find(accounts(:casey))
+    end
+    
+    it 'should set an account as not pending recovery' do
+      @account.is_pending_recovery?.should be_true
+      @account.is_not_pending_recovery!
+      @account.is_pending_recovery?.should be_false
+    end
+  end
+  
+  describe 'ban! method' do
+    before do
+      @account = Account.find(accounts(:alice))
+    end
+    
+    it 'should set the banned attribute to true' do
+      @account.banned?.should be_false
+      @account.ban!
+      @account.banned?.should be_true
+    end
+  end
+  
+  describe 'unban! method' do
+    before do
+      @account = Account.find(accounts(:mallory))
+    end
+    
+    it 'should set the banned attribute to false' do
+      @account.banned?.should be_true
+      @account.unban!
+      @account.banned?.should be_false
+    end
+  end
+  
   describe 'when created' do
     describe 'with valid credentials' do
       before do

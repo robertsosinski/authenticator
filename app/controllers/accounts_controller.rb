@@ -28,9 +28,9 @@ class AccountsController < ApplicationController
     account = Account.find_by_id_and_verification_key(params[:id], params[:verification_key])
     if account
       if account.is_pending_activation?
-        account.activate_and_clear_verification_key!
+        account.activate!
       else # account is pending recovery
-        account.clear_verification_key!
+        account.is_not_pending_recovery!
       end
       head :ok
     else

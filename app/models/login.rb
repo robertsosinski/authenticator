@@ -7,7 +7,7 @@ class Login < ActiveRecord::Base
 	
 	validates_presence_of :match, :message => 'for your Email Address and Password could not be found'
 	
-	after_save :clear_verification_key_if_neccessary
+	after_save :ensure_account_is_not_pending_recovery # If the user can login, then they no longer need their account recovered.
 	
   def validate
     if self.match
@@ -26,7 +26,7 @@ class Login < ActiveRecord::Base
 	  end
 	end
 	
-	def clear_verification_key_if_neccessary
-	  self.match.ensure_verification_key_is_cleared!
+	def ensure_account_is_not_pending_recovery
+	  self.match.is_not_pending_recovery!
   end
 end

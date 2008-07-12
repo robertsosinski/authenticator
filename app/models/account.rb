@@ -51,11 +51,27 @@ class Account < ActiveRecord::Base
   def password_is?(password)
     ENCRYPT.hexdigest(password + self.salt) == self.encrypted_password
   end
+  
+  def is_pending_activation?
+    ! self.activated? and self.verification_key ? true : false
+  end
     
   def activate!
-    self.update_attribute(:actived, true)
+    self.update_attributes(:activated => true, :verification_key => nil) if self.is_pending_activation?
+  end  
+  
+  def is_pending_recovery?
+    self.activated? and self.verification_key ? true : false
   end
   
+  def is_pending_recovery!
+    self.update_attribute(:verification_key, KeyGenerator.create)
+  end
+  
+  def is_not_pending_recovery!
+    self.update_attribute(:verification_key, nil) if self.is_pending_recovery?
+  end
+    
   def ban!
     self.update_attribute(:banned, true)
   end
@@ -63,31 +79,7 @@ class Account < ActiveRecord::Base
   def unban!
     self.update_attribute(:banned, false)
   end
-  
-  def is_pending_activation?
-    ! self.actived? and self.verification_key ? true : false
-  end
-  
-  def is_pending_recovery?
-    self.actived? and self.verification_key ? true : false
-  end
-  
-  def create_verification_key!
-    self.update_attribute(:verification_key, KeyGenerator.create)
-  end
-  
-  def clear_verification_key!
-    self.update_attribute(:verification_key, nil)
-  end
-  
-  def ensure_verification_key_is_cleared!
-    self.update_attribute(:verification_key, nil) if self.verification_key?
-  end
-  
-  def activate_and_clear_verification_key!
-    self.update_attributes(:actived => true, :verification_key => nil)
-  end
-  
+    
   private
   
   def skip_password_encryption_and_validation?
