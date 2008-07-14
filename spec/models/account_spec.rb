@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Account do
   describe 'self.find_by_email_address_and_password method' do
-    describe 'when given valid credentials' do    
+    describe 'when given valid credentials' do
       it 'should return an Account matching the credentials' do
         Account.find_by_email_address_and_password(accounts(:alice).email_address, 'secret').should eql(accounts(:alice))
       end
