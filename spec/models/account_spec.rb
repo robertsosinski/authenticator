@@ -16,8 +16,22 @@ describe Account do
   end
   
   describe 'self.find_by_id_and_verification_key method' do
-    it 'should work, but I have to check it in the controller' do
-      pending
+    describe 'if passed a valid id and verification key' do
+      it 'should return return an Account matching the id and verification key' do
+        Account.find_by_id_and_verification_key(accounts(:bob).id, accounts(:bob).verification_key).should eql(accounts(:bob))
+      end
+    end
+    
+    describe 'if passed an invalid id and verification key' do
+      it 'should return nil' do
+        Account.find_by_id_and_verification_key(accounts(:bob).id, 'invalid verification key').should be_nil
+      end
+    end
+    
+    describe 'if passed a valid id and no verification key' do
+      it 'should return nil' do
+        Account.find_by_id_and_verification_key(accounts(:mallory).id, nil).should be_nil
+      end
     end
   end
   

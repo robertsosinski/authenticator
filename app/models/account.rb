@@ -36,7 +36,7 @@ class Account < ActiveRecord::Base
     # It is very important to check if the verification_key is nil or else passing a nil
     # for the verification_key through the API will allow an API user to login as anyone!!!
     ##
-    verification_key.nil? ? nil : self.find(id, :conditions => {:verification_key => verification_key})
+    verification_key.nil? ? nil : self.find_by_id(id, :conditions => {:verification_key => verification_key})
   end
   
   def password=(password)
