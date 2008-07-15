@@ -5,7 +5,7 @@ class Mailer < ActionMailer::Base
     subject "Simple and Restful Account Recovery"
     content_type 'text/html'
     
-    body :verification_key => options[:verification_key], :domain => options[:domain]
+    body :verification_key => options[:verification_key]
   end
   
   def recovery(options)
@@ -14,6 +14,6 @@ class Mailer < ActionMailer::Base
     subject "Simple and Restful Account Recovery"
     content_type 'text/html'
     
-    body :verification_key => options[:verification_key], :domain => options[:domain]
+    body :verification_key => options[:verification_key]
   end
 end

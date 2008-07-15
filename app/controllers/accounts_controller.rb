@@ -14,10 +14,7 @@ class AccountsController < ApplicationController
   def create
     @account = Account.new(params[:account])
     if @account.save
-      Mailer.deliver_activation(:verification_key => @account.verification_key,
-                                :email => @account.email_address,
-                                :domain => request.env['HTTP_HOST'])
-      
+      Mailer.deliver_activation(:verification_key => @account.verification_key, :email => @account.email_address)
       render :xml => @account, :status => :created, :location => @account
     else
       render :xml => @account.errors, :status => :unprocessable_entity
@@ -29,7 +26,7 @@ class AccountsController < ApplicationController
     if account
       if account.is_pending_activation?
         account.activate!
-      else # account is pending recovery
+      else
         account.is_not_pending_recovery!
       end
       head :ok
@@ -45,7 +42,7 @@ class AccountsController < ApplicationController
   def update
     @account = Account.find(params[:id])
     if @account.update_attributes(params[:account])
-      head :ok
+      render :xml => @account, :status => :accepted
     else
       render :xml => @account.errors, :status => :unprocessable_entity
     end
@@ -55,9 +52,7 @@ class AccountsController < ApplicationController
     account = Account.find_by_email_address(params[:email_address])
     if account
       account.create_verification_key!
-      Mailer.deliver_recovery(:verification_key => account.verification_key,
-                              :email => account.email_address,
-                              :domain => request.env['HTTP_HOST'])
+      Mailer.deliver_recovery(:verification_key => account.verification_key, :email => account.email_address)
       head :ok
     else
       head :not_found

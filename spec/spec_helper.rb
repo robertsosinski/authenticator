@@ -12,7 +12,9 @@ Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
   config.use_instantiated_fixtures  = false
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
-
+  
+  config.include XMLResponseValidations
+  
   # == Fixtures
   #
   # You can declare fixtures for each example_group like this:
