@@ -42,7 +42,7 @@ class AccountsController < ApplicationController
   def update
     @account = Account.find(params[:id])
     if @account.update_attributes(params[:account])
-      render :xml => @account, :status => :accepted
+      render :xml => @account, :status => :ok
     else
       render :xml => @account.errors, :status => :unprocessable_entity
     end
@@ -51,7 +51,7 @@ class AccountsController < ApplicationController
   def recover
     account = Account.find_by_email_address(params[:email_address])
     if account
-      account.create_verification_key!
+      account.is_pending_recovery!
       Mailer.deliver_recovery(:verification_key => account.verification_key, :email => account.email_address)
       head :ok
     else
