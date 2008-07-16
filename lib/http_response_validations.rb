@@ -1,4 +1,4 @@
-module XMLResponseValidations
+module HTTPResponseValidations
   HTTP_CREATED              = "201 Created"
   HTTP_ACCEPTED             = "202 Accepted"
   HTTP_UNPROCESSABLE_ENTITY = "422 Unprocessable Entity"
