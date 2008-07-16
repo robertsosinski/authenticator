@@ -6,7 +6,7 @@ alice: # activated
   activated: true
   banned: false
 
-bob: # pending activated
+bob: # pending activation
   email_address: bob@capansis.com
   salt: Gspan8T7
   # password: password
