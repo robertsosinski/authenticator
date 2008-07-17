@@ -1,7 +1,6 @@
 class CreateAccounts < ActiveRecord::Migration
   def self.up
     create_table :accounts do |t|
-      t.belongs_to :application
       t.string :email_address, :salt, :encrypted_password, :verification_key
       t.boolean :activated, :default => false
       t.boolean :banned, :default => false

@@ -12,13 +12,12 @@
 ActiveRecord::Schema.define(:version => 20080705211535) do
 
   create_table "accounts", :force => true do |t|
-    t.integer  "application_id",     :limit => 11
     t.string   "email_address"
     t.string   "salt"
     t.string   "encrypted_password"
     t.string   "verification_key"
-    t.boolean  "activated",                        :default => false
-    t.boolean  "banned",                           :default => false
+    t.boolean  "activated",          :default => false
+    t.boolean  "banned",             :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
