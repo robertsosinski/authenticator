@@ -1,10 +1,10 @@
 class AccountsController < ApplicationController
   def index
-    render :xml => Account.all
+    render :xml => Account.all(:conditions => {:site_id => @@site.id})
   end
   
   def show
-    render :xml => Account.find(params[:id])
+    render :xml => Account.find(params[:id], :conditions => {:site_id => @@site.id})
   end
   
   def new
@@ -13,8 +13,10 @@ class AccountsController < ApplicationController
   
   def create
     @account = Account.new(params[:account])
+    @account.site = @@site
     if @account.save
-      Mailer.deliver_activation(:verification_key => @account.verification_key, :email => @account.email_address)
+      # Mailer.deliver_activation(:verification_key => @account.verification_key, :email => @account.email_address)
+      Mailer.deliver_activation(:site => @@site, :account => @account)
       render :xml => @account, :status => :created, :location => @account
     else
       render :xml => @account.errors, :status => :unprocessable_entity
@@ -36,11 +38,11 @@ class AccountsController < ApplicationController
   end
   
   def edit
-    render :xml => Account.find(params[:id])
+    render :xml => Account.find(params[:id], :conditions => {:site_id => @@site.id})
   end
   
   def update
-    @account = Account.find(params[:id])
+    @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     if @account.update_attributes(params[:account])
       render :xml => @account, :status => :ok
     else

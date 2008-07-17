@@ -9,22 +9,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080705211535) do
+ActiveRecord::Schema.define(:version => 20080717011848) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email_address"
     t.string   "salt"
     t.string   "encrypted_password"
     t.string   "verification_key"
-    t.boolean  "activated",          :default => false
-    t.boolean  "banned",             :default => false
+    t.boolean  "activated",                        :default => false
+    t.boolean  "banned",                           :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "site_id",            :limit => 11
   end
 
   create_table "logins", :force => true do |t|
     t.integer  "account_id", :limit => 11
     t.datetime "created_at"
+  end
+
+  create_table "sites", :force => true do |t|
+    t.string   "domain"
+    t.string   "api_key"
+    t.string   "email_address"
+    t.string   "support_title"
+    t.text     "activation_letter"
+    t.text     "recovery_letter"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

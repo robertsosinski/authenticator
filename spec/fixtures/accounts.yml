@@ -1,4 +1,5 @@
 alice: # activated
+  site: capansis
   email_address: alice@capansis.com
   salt: a6QtZhwo
   # password: secret
@@ -7,6 +8,7 @@ alice: # activated
   banned: false
 
 bob: # pending activation
+  site: capansis
   email_address: bob@capansis.com
   salt: Gspan8T7
   # password: password
@@ -16,6 +18,7 @@ bob: # pending activation
   banned: false
 
 casey: # pending recovery
+  site: capansis
   email_address: casey@capansis.com
   salt: /46dfyRy
   # password: forgot
@@ -25,9 +28,19 @@ casey: # pending recovery
   banned: false
 
 mallory: # banned
+  site: capansis
   email_address: mallory@aol.com
   salt: B4sLInf7
   # password: trouble
   encrypted_password: ef71e259b65ff0fc5dfd2101a194d3abe22a2114030e9a7487b8d4104b2c697f
   activated: true
   banned: true
+  
+alice: #activated
+  site: ibm
+  email_address: alice@capansis.com
+  salt: 2y00A7QS
+  # pasword: secret
+  encrypted_password: 513346563439bc03e12681d21eefc205f6f54ab5cf6fefa11592644caee7f5d6
+  activated: true
+  banned: false

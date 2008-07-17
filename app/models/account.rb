@@ -7,7 +7,9 @@ class Account < ActiveRecord::Base
   
   has_many :logins
   
-  validates_uniqueness_of :email_address,
+  belongs_to :site
+  
+  validates_uniqueness_of :email_address, :scope => 'site_id',
                           :message => 'must be unique'
   
   validates_format_of :email_address, :with => /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}/i,

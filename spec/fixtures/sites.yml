@@ -1,0 +1,11 @@
+capansis:
+  domain: capansis.com
+  api_key: secret
+  email_address: support@capansis.com
+  support_title: Capansis Support
+
+ibm:
+  domain: ibm.com
+  api_key: secret
+  email_address: support@ibm.com
+  support_title: IBM Support

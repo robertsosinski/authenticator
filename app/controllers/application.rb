@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   
-  before_filter :authorize
+  before_filter :authenticate
   
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
@@ -17,9 +17,9 @@ class ApplicationController < ActionController::Base
   
   protected
   
-  def authorize
-    authenticate_or_request_with_http_basic do |username, password|
-      username == "admin" && password == "secret"
+  def authenticate
+    authenticate_or_request_with_http_basic do |domain, api_key|
+      @@site = Site.authenticate(domain, api_key)
     end
   end
 end
