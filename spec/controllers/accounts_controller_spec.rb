@@ -1,6 +1,12 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AccountsController do
+  before do
+    controller.stub!(:authenticate).and_return(true)
+    
+    Site.stub!(:authenticate).and_return(@@site = mock_model(Site))
+  end
+  
   describe 'the index action' do
     before do
       Account.stub!(:all).and_return(mock_model(Account))
@@ -40,9 +46,8 @@ describe AccountsController do
   describe 'the create action' do
     describe 'when given valid attributes' do
       before do
-        Account.stub!(:new).and_return(@account = mock_model(Account, :save => true,
-                                                                      :verification_key => 'value',
-                                                                      :email_address => 'value'))
+        Account.stub!(:new).and_return(@account = mock_model(Account, :save => true))
+        @account.should_receive(:site=).with(@@site)
         Mailer.should_receive(:deliver_activation).and_return(true)
         
         post :create
@@ -56,12 +61,13 @@ describe AccountsController do
     describe 'when given invalid attributes' do
       before do
         Account.stub!(:new).and_return(@account = mock_model(Account, :save => false))
+        @account.should_receive(:site=).with(@@site)
         Mailer.should_not_receive(:deliver_activation)
         
         post :create
       end
       
-      it 'should unprocessable' do
+      it 'should be unprocessable' do
         response.should be_unprocessable_entity
       end
     end

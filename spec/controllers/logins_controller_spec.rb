@@ -1,6 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe LoginsController do
+  before do
+    controller.stub!(:authenticate).and_return(true)
+  end
+  
   describe 'the create action' do
     describe 'when given valid attributes' do
       before do

@@ -203,10 +203,13 @@ describe Account do
     describe 'without a unique email address' do
       before do
         @account = Account.create({
+          :site_id => sites(:capansis).id,
           :email_address => 'alice@capansis.com',
           :password => 'secret',
           :password_confirmation => 'secret'
         })
+        
+        # @account.site = sites(:capansis)
       end
       
       it 'should be marked as invalid and not saved' do

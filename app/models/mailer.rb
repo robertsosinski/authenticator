@@ -9,11 +9,11 @@ class Mailer < ActionMailer::Base
   end
   
   def recovery(options)
-    from "Recovery <development@capansis.com>"
-    recipients options[:email]
-    subject "Account Recovery"
+    from "#{options[:site].support_title} <#{options[:site].email_address}>"
+    recipients options[:account].email_address
+    subject options[:site].recovery_subject
     content_type 'text/html'
     
-    body :verification_key => options[:verification_key]
+    body :site => options[:site], :account => options[:account]
   end
 end

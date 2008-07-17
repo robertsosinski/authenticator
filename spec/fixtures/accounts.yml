@@ -35,8 +35,8 @@ mallory: # banned
   encrypted_password: ef71e259b65ff0fc5dfd2101a194d3abe22a2114030e9a7487b8d4104b2c697f
   activated: true
   banned: true
-  
-alice: #activated
+
+alice_2: #activated
   site: ibm
   email_address: alice@capansis.com
   salt: 2y00A7QS

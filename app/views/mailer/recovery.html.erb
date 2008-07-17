@@ -1,3 +1,1 @@
-Your Account Recovery Key:<br />
-<br />
-<%= @verification_key %>
+<%= @site.recovery_letter.gsub('{{account_id}}', @account.id.to_s).gsub('{{verification_key}}', @account.verification_key) %>
