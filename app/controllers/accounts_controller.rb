@@ -1,14 +1,26 @@
 class AccountsController < ApplicationController
   def index
-    render :xml => Account.all(:conditions => {:site_id => @@site.id})
+    @accounts = Account.all(:conditions => {:site_id => @@site.id})
+    respond_to do |format|
+      format.html 
+      format.xml {render :xml => @accounts}
+    end
   end
   
   def show
-    render :xml => Account.find(params[:id], :conditions => {:site_id => @@site.id})
+    @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
+    respond_to do |format|
+      format.html
+      format.xml {render :xml => @account}
+    end
   end
   
   def new
-    render :xml => Account.new
+    @account = Account.new
+    respond_to do |format|
+      format.html
+      format.xml {render :xml => Account.new}
+    end
   end
   
   def create
@@ -16,9 +28,15 @@ class AccountsController < ApplicationController
     @account.site = @@site
     if @account.save
       Mailer.deliver_activation(:site => @@site, :account => @account)
-      render :xml => @account, :status => :created, :location => @account
+      respond_to do |format|
+        format.html
+        format.xml {render :xml => @account, :status => :created, :location => @account}
+      end
     else
-      render :xml => @account.errors, :status => :unprocessable_entity
+      respond_to do |format|
+        format.html
+        format.xml {render :xml => @account.errors, :status => :unprocessable_entity}
+      end
     end
   end
   
@@ -37,15 +55,25 @@ class AccountsController < ApplicationController
   end
   
   def edit
-    render :xml => Account.find(params[:id], :conditions => {:site_id => @@site.id})
+    @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
+    respond_to do |format|
+      format.html
+      format.xml {render :xml => @account}
+    end
   end
   
   def update
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     if @account.update_attributes(params[:account])
-      render :xml => @account, :status => :ok
+      respond_to do |format|
+        format.html
+        format.xml {render :xml => @account}
+      end
     else
-      render :xml => @account.errors, :status => :unprocessable_entity
+      respond_to do |format|
+        format.html
+        format.xml {render :xml => @account.errors, :status => :unprocessable_entity}
+      end
     end
   end
   
