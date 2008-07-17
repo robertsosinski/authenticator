@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(:version => 20080717011848) do
     t.string   "api_key"
     t.string   "email_address"
     t.string   "support_title"
+    t.string   "activation_subject"
+    t.string   "recovery_subject"
     t.text     "activation_letter"
     t.text     "recovery_letter"
     t.datetime "created_at"

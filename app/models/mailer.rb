@@ -2,10 +2,10 @@ class Mailer < ActionMailer::Base
   def activation(options)
     from "#{options[:site].support_title} <#{options[:site].email_address}>"
     recipients options[:account].email_address
-    subject "Account Activation"
+    subject options[:site].activation_subject
     content_type 'text/html'
     
-    body :verification_key => options[:account].verification_key
+    body :site => options[:site], :account => options[:account]
   end
   
   def recovery(options)

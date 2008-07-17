@@ -1,7 +1,7 @@
 class CreateSites < ActiveRecord::Migration
   def self.up
     create_table :sites do |t|
-      t.string :domain, :api_key, :email_address, :support_title
+      t.string :domain, :api_key, :email_address, :support_title, :activation_subject, :recovery_subject
       t.text :activation_letter, :recovery_letter
       t.timestamps
     end

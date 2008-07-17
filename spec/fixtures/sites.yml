@@ -3,9 +3,17 @@ capansis:
   api_key: secret
   email_address: support@capansis.com
   support_title: Capansis Support
+  activation_subject: Welcome To Capansis
+  recovery_subject: Please Change Your Password
+  activation_letter: Click <a href="http://capansis.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to activate your account.
+  recovery_letter: Click <a href="http://capansis.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to recover your account.
 
 ibm:
   domain: ibm.com
   api_key: secret
   email_address: support@ibm.com
   support_title: IBM Support
+  activation_subject: Welcome To IBM
+  recovery_subject: Please Change Your Password
+  activation_letter: Click <a href="http://ibm.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to activate your account.
+  recovery_letter: Click <a href="http://ibm.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to recover your account.

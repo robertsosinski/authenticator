@@ -15,7 +15,6 @@ class AccountsController < ApplicationController
     @account = Account.new(params[:account])
     @account.site = @@site
     if @account.save
-      # Mailer.deliver_activation(:verification_key => @account.verification_key, :email => @account.email_address)
       Mailer.deliver_activation(:site => @@site, :account => @account)
       render :xml => @account, :status => :created, :location => @account
     else
@@ -54,7 +53,7 @@ class AccountsController < ApplicationController
     account = Account.find_by_email_address(params[:email_address])
     if account
       account.is_pending_recovery!
-      Mailer.deliver_recovery(:verification_key => account.verification_key, :email => account.email_address)
+      Mailer.deliver_recovery(:site => @@site, :account => account)
       head :ok
     else
       head :not_found
