@@ -1,6 +1,3 @@
-# Filters added to this controller apply to all controllers in the application.
-# Likewise, all the methods added will be available for all controllers.
-
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   
@@ -18,8 +15,8 @@ class ApplicationController < ActionController::Base
   protected
   
   def authenticate
-    authenticate_or_request_with_http_basic do |domain, api_key|
-      @@site = Site.authenticate(domain, api_key)
+    authenticate_or_request_with_http_basic do |user, password|
+      @@site = Site.authenticate(user, password)
     end
   end
 end
