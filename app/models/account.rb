@@ -26,8 +26,8 @@ class Account < ActiveRecord::Base
   
   before_create :save_verification_key
   
-  def self.find_by_email_address_and_password(email_address, password)
-    account = self.find_by_email_address(email_address)
+  def self.find_by_email_address_and_password(site_id, email_address, password)
+    account = self.find_by_email_address(email_address, :conditions => {:site_id => site_id})
     if account and account.encrypted_password == ENCRYPT.hexdigest(password + account.salt)
       return account
     end

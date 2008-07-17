@@ -6,7 +6,8 @@ describe Login do
       before do
         @login = Login.create({
           :email_address => 'alice@capansis.com',
-          :password => 'secret'
+          :password => 'secret',
+          :site_id => sites(:capansis).id
         })
       end
       
@@ -19,7 +20,8 @@ describe Login do
       before do
         @login = Login.create({
           :email_address => 'eve@yahoo.com',
-          :password => 'invalid'
+          :password => 'invalid',
+          :site_id => sites(:capansis).id
         })
       end
       
@@ -34,7 +36,8 @@ describe Login do
       before do
         @login = Login.create({
           :email_address => 'casey@capansis.com',
-          :password => 'forgot'
+          :password => 'forgot',
+          :site_id => sites(:capansis).id
         })
       end
       

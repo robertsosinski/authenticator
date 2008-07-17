@@ -4,13 +4,13 @@ describe Account do
   describe 'self.find_by_email_address_and_password method' do
     describe 'when given valid credentials' do
       it 'should return an Account matching the credentials' do
-        Account.find_by_email_address_and_password(accounts(:alice).email_address, 'secret').should eql(accounts(:alice))
+        Account.find_by_email_address_and_password(sites(:capansis).id, accounts(:alice).email_address, 'secret').should eql(accounts(:alice))
       end
     end
     
     describe 'when given invalid credentials' do
       it 'should return nil' do
-        Account.find_by_email_address_and_password('eve', 'invalid').should be_nil
+        Account.find_by_email_address_and_password(sites(:capansis).id, 'eve', 'invalid').should be_nil
       end
     end
   end

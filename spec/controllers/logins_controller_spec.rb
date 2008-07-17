@@ -3,12 +3,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe LoginsController do
   before do
     controller.stub!(:authenticate).and_return(true)
+    
+    Site.stub!(:authenticate).and_return(@@site = mock_model(Site))
   end
   
   describe 'the create action' do
     describe 'when given valid attributes' do
       before do
         Login.stub!(:new).and_return(@login = mock_model(Login, :save => true))
+        @login.should_receive(:site_id=).with(@@site.id)
+        
         post :create
       end
       
@@ -24,6 +28,8 @@ describe LoginsController do
     describe 'when given invalid attributes' do
       before do
         Login.stub!(:new).and_return(@login = mock_model(Login, :save => false))
+        @login.should_receive(:site_id=).with(@@site.id)
+        
         post :create
       end
       
