@@ -8,33 +8,8 @@
 		<th>Options</th>
 	</tr>
 	
-	<% for account in @accounts %>
-		<tr>
-			<td><%= account.email_address %></td>
-			<td><%= account.created_at.to_s(:standard) %></td>
-			<td>
-				<% if account.activated? %>
-					Yes
-				<% else %>
-					No <%= link_to "Activate", activate_account_path(account), :method => :put %>
-				<% end %>
-			</td>
-			
-			<td>
-				<% if account.banned? %>
-					Yes <%= link_to_remote "Un-Ban", :url => formatted_unban_account_path(account, :js), :method => :put %>
-				<% else %>
-					No <%= link_to_remote "Ban", :url => formatted_ban_account_path(account, :js), :method => :put %>
-				<% end %>
-			</td>
-			
-			<td>
-				<%= link_to "Edit", edit_account_path(account) %> |
-				<%= link_to "Delete", account, :method => :delete, :confirm => "Are you sure?" %>
-			</td>
-		</tr>
-	<% end %>
-
+	<%= render :partial => @accounts %>
+	
 </table>
 
 <div id ="pagination">	

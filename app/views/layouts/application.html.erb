@@ -13,12 +13,6 @@
 	<div id="header">
 		Capansis Authentication for <%= @authenticated_site.domain %>
 	</div>
-
-	<% if flash[:notice] %>
-		- <%= flash[:notice] %>
-	<% end %>
-
-	<br /><br />
 	
 	<div id="content">
 		<%= yield %>

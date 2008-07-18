@@ -47,8 +47,6 @@ class AccountsController < ApplicationController
   def activate
     @account = Account.find(params[:id])
     @account.activate!
-    flash[:notice] = "#{@account.email_address} has been Activated"
-    redirect_to(accounts_path)
   end
   
   def verify
@@ -105,11 +103,13 @@ class AccountsController < ApplicationController
   end
   
   def ban
-    Account.find(params[:id]).ban!
+    @account = Account.find(params[:id])
+    @account.ban!
   end
   
   def unban
-    Account.find(params[:id]).unban!
+    @account = Account.find(params[:id])
+    @account.unban!
   end
   
   def destroy

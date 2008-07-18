@@ -1,0 +1,2 @@
+page["ban_account_#{@account.id}"].hide
+page["unban_account_#{@account.id}"].show

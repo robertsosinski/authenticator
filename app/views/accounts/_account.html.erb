@@ -1,0 +1,29 @@
+<tr>
+	<td><%= account.email_address %></td>
+	<td><%= account.created_at.to_s(:standard) %></td>
+	
+	<td>
+		<span id="activate_account_<%= account.id %>" <%= 'style="display: none;"' if account.activated? %>>
+			No <%= link_to_remote "Activate", :url => formatted_activate_account_path(account, :js), :method => :put %>
+		</span>
+		
+		<span id="activated_account_<%= account.id %>" <%= 'style="display: none;"' unless account.activated? %>>
+			Yes
+		</span>
+	</td>
+
+	<td>
+		<span id="ban_account_<%= account.id %>" <%= 'style="display: none;"' if account.banned? %>>
+			No <%= link_to_remote "Ban", :url => formatted_ban_account_path(account, :js), :method => :put %>
+		</span>
+		
+		<span id="unban_account_<%= account.id %>" <%= 'style="display: none;"' unless account.banned? %>>
+			Yes <%= link_to_remote "Un-Ban", :url => formatted_unban_account_path(account, :js), :method => :put %>
+		</span>
+	</td>
+
+	<td>
+		<%= link_to "Edit", edit_account_path(account) %> |
+		<%= link_to "Delete", account, :method => :delete, :confirm => "Are you sure?" %>
+	</td>
+</tr>

@@ -1,0 +1,2 @@
+page["activate_account_#{@account.id}"].hide
+page["activated_account_#{@account.id}"].show
