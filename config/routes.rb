@@ -1,7 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :accounts,
                 :collection => {:recover => :post},
-                :member => {:verify => :put}
+                :member => {:activate => :put, :verify => :put, :ban => :put, :unban => :put}
   
   map.resources :logins
   

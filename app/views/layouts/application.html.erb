@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>Capansis Authentication</title>
+	<%= stylesheet_link_tag('style') %>
+	<%= javascript_include_tag(:defaults) %>
+</head>
+
+<body>
+	
+	<div id="header">
+		Capansis Authentication for <%= @authenticated_site.domain %>
+	</div>
+
+	<% if flash[:notice] %>
+		- <%= flash[:notice] %>
+	<% end %>
+
+	<br /><br />
+	
+	<div id="content">
+		<%= yield %>
+	</div>
+
+</body>

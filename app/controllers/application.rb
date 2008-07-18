@@ -17,6 +17,7 @@ class ApplicationController < ActionController::Base
   def authenticate
     authenticate_or_request_with_http_basic do |user, password|
       @@site = Site.authenticate(user, password)
+      @authenticated_site = @@site
     end
   end
 end

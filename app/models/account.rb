@@ -5,9 +5,9 @@ class Account < ActiveRecord::Base
   
   ENCRYPT = Digest::SHA256
   
-  has_many :logins
+  has_many :logins, :dependent => :destroy
   
-  belongs_to :site
+  belongs_to :site, :counter_cache => true
   
   validates_uniqueness_of :email_address, :scope => 'site_id',
                           :message => 'must be unique'
@@ -39,6 +39,14 @@ class Account < ActiveRecord::Base
     # for the verification_key through the API will allow an API user to login as anyone!!!
     ##
     verification_key.nil? ? nil : self.find_by_id(id, :conditions => {:verification_key => verification_key})
+  end
+  
+  def self.find_by_site_id_and_letter(site_id, letter)
+    if letter == '#'
+      @accounts = Account.find(:all, :conditions => ["email_address REGEXP ? AND site_id = ?", "^[^a-z]", site_id], :order => 'email_address')
+    else
+      @accounts = Account.find(:all, :conditions => ["email_address LIKE ? AND site_id = ?", "#{letter}%", site_id], :order => 'email_address')
+    end
   end
   
   def password=(password)

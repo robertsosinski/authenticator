@@ -1,0 +1,72 @@
+/* @override http://localhost:3001/stylesheets/style.css?1216407324 */
+
+body {
+	margin: 0;
+	background-color: #e6e6e6;
+	font: 90% "Lucida Grande", Lucida, Verdana, sans-serif;
+}
+
+a {
+	color: #003f82;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+#header {
+	padding: 10px 20px 10px 20px;
+	background-color: #003f82;
+	color: white;
+	font-size: 150%;
+	border-bottom-style: solid;
+	border-bottom-color: #002143;
+}
+
+#content {	
+	margin: 10px;
+	padding: 10px;
+	background-color: white;
+	border-right: 5px solid #999;
+	border-bottom: 5px solid #999;
+}
+
+table#accounts {
+	width: 100%;
+	border: 1px solid #003f82;
+	border-bottom: 0;
+	border-spacing: 0;
+}
+
+table#accounts tr:hover {
+	background-color: #ededed;
+}
+
+table#accounts th {
+	background-color: #003f82;
+	color: white;
+	text-align: left;
+	padding: 4px 10px 4px 10px;
+}
+
+table#accounts td {
+	border-bottom: 1px solid #003f82;
+	padding: 4px 10px 4px 10px;
+}
+
+#pagination {
+	margin-top: 10px;
+}
+
+#pagination a {
+	border-style: solid;
+	border-width: 1px;
+	padding: 4px 8px 4px 8px;
+	text-decoration: none;
+}
+
+#pagination .current {
+
+	padding: 4px;
+	text-decoration: none;
+}

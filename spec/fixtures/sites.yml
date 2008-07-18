@@ -1,4 +1,5 @@
 capansis:
+  accounts_count: 4
   domain: capansis.com
   api_key: secret
   email_address: support@capansis.com
@@ -9,6 +10,7 @@ capansis:
   recovery_letter: Click <a href="http://capansis.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to recover your account.
 
 ibm:
+  accounts_count: 1
   domain: ibm.com
   api_key: secret
   email_address: support@ibm.com

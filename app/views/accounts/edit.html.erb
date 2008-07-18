@@ -1,0 +1,21 @@
+<fieldset>
+	<legend>Edit Account</legend>
+
+	<% form_for @account do |f| %>
+
+		<%= f.error_messages %>
+
+		<%= f.label :email_address %><br />
+		<%= f.text_field :email_address %><br />
+
+		<%= f.label :password %><br />
+		<%= f.password_field :password, :value => '' %><br />
+
+		<%= f.label :password_confirmation %><br />
+		<%= f.password_field :password_confirmation, :value => '' %><br />
+
+		<%= submit_tag "Update" %>
+
+	<% end %>
+	
+</fieldset>

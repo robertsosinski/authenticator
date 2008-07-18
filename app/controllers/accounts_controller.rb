@@ -1,9 +1,13 @@
 class AccountsController < ApplicationController
   def index
-    @accounts = Account.all(:conditions => {:site_id => @@site.id})
     respond_to do |format|
-      format.html 
-      format.xml {render :xml => @accounts}
+      format.html do
+        @accounts = Account.find_by_site_id_and_letter(@@site.id, params[:letter])
+      end
+      
+      format.xml do
+        head :not_found
+      end
     end
   end
   
@@ -40,6 +44,13 @@ class AccountsController < ApplicationController
     end
   end
   
+  def activate
+    @account = Account.find(params[:id])
+    @account.activate!
+    flash[:notice] = "#{@account.email_address} has been Activated"
+    redirect_to(accounts_path)
+  end
+  
   def verify
     account = Account.find_by_id_and_verification_key(params[:id], params[:verification_key])
     if account
@@ -66,12 +77,17 @@ class AccountsController < ApplicationController
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     if @account.update_attributes(params[:account])
       respond_to do |format|
-        format.html
+        format.html do
+          flash[:notice] = "Account Updated."
+          redirect_to(accounts_path)
+        end
         format.xml {render :xml => @account}
       end
     else
       respond_to do |format|
-        format.html
+        format.html do
+          render(:action => 'edit')
+        end
         format.xml {render :xml => @account.errors, :status => :unprocessable_entity}
       end
     end
@@ -86,5 +102,19 @@ class AccountsController < ApplicationController
     else
       head :not_found
     end
+  end
+  
+  def ban
+    Account.find(params[:id]).ban!
+  end
+  
+  def unban
+    Account.find(params[:id]).unban!
+  end
+  
+  def destroy
+    @account = Account.find(params[:id])
+    flash[:notice] = "#{@account.email_address} has been deleted"
+    redirect_to(accounts_path)
   end
 end

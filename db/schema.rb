@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(:version => 20080717011848) do
   end
 
   create_table "sites", :force => true do |t|
+    t.integer  "accounts_count",     :limit => 11, :default => 0
     t.string   "domain"
     t.string   "api_key"
     t.string   "email_address"
