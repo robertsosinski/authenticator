@@ -1,0 +1,42 @@
+<h2>Editing Site Options</h2>
+
+<% form_for @site do |f| %>
+
+	<%= f.error_messages %>
+
+	<fieldset>
+		<legend>Site Contact</legend>	
+
+		<%= f.label :email_address %><br />
+		<%= f.text_field :email_address %><br />
+		
+		<%= f.label :support_title %><br />
+		<%= f.text_field :support_title %><br />
+		
+	</fieldset>
+	
+	<fieldset>
+		<legend>Activation Letter</legend>	
+
+		<%= f.label :activation_subject %><br />
+		<%= f.text_field :activation_subject %><br />
+		
+		<%= f.label :activation_letter %><br />
+		<%= f.text_area :activation_letter %><br />
+		
+	</fieldset>
+	
+	<fieldset>
+		<legend>Recovery Letter</legend>	
+
+		<%= f.label :recovery_subject %><br />
+		<%= f.text_field :recovery_subject %><br />
+		
+		<%= f.label :recovery_letter %><br />
+		<%= f.text_area :recovery_letter %><br />
+		
+	</fieldset>
+	
+	<%= f.submit "Update Site Options" %>
+
+<% end %>

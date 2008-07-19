@@ -12,7 +12,18 @@
 	
 	<div id="header">
 		<h1>Capansis Authentication for <%= @authenticated_site.domain %></h1>
+	
+		<ul>
+			<li><%= link_to "List Accounts", accounts_path %></li>
+			<li><%= link_to "Edit Site Options", edit_site_path('options') %></li>
+		</ul>
 	</div>
+	
+	<% if flash[:notice] %>
+		<div id="flash">
+			<%= flash[:notice] %> <%= link_to_function "Hide", hide_flash %>
+		</div>
+	<% end %>
 	
 	<div id="content">
 		<%= yield %>

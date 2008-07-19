@@ -1,11 +1,11 @@
 <h2>Editing Account</h2>
 
-<fieldset>
-	<legend>Account</legend>
+<% form_for @account do |f| %>
 
-	<% form_for @account do |f| %>
+	<%= f.error_messages %>
 
-		<%= f.error_messages %>
+	<fieldset>
+		<legend>Credentials</legend>
 
 		<%= f.label :email_address %><br />
 		<%= f.text_field :email_address %><br />
@@ -16,10 +16,8 @@
 		<%= f.label :password_confirmation %><br />
 		<%= f.password_field :password_confirmation, :value => '' %><br />
 		
-		<br />
-		
-		<%= submit_tag "Update" %>
-
-	<% end %>
+	</fieldset>
 	
-</fieldset>
+	<%= f.submit "Update Account" %>
+
+<% end %>

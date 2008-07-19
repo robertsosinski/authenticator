@@ -14,7 +14,6 @@ class AccountsController < ApplicationController
   def show
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     respond_to do |format|
-      format.html
       format.xml {render :xml => @account}
     end
   end

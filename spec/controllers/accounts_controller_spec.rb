@@ -1,14 +1,14 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AccountsController do
-  before do
+  before(:each) do
     controller.stub!(:authenticate).and_return(true)
     
     Site.stub!(:authenticate).and_return(@@site = mock_model(Site))
   end
   
   describe 'the index action' do
-    before do
+    before(:each) do
       Account.stub!(:all).and_return(mock_model(Account))
       
       get :index
@@ -20,7 +20,7 @@ describe AccountsController do
   end
   
   describe 'the show action' do
-    before do
+    before(:each) do
       Account.stub!(:find).and_return(mock_model(Account))
       
       get :show, :id => 'id'
@@ -32,7 +32,7 @@ describe AccountsController do
   end
   
   describe 'the new action' do
-    before do
+    before(:each) do
       Account.stub!(:new).and_return(mock_model(Account))
       
       get :new
@@ -45,7 +45,7 @@ describe AccountsController do
   
   describe 'the create action' do
     describe 'when given valid attributes' do
-      before do
+      before(:each) do
         Account.stub!(:new).and_return(@account = mock_model(Account, :save => true))
         @account.should_receive(:site=).with(@@site)
         Mailer.should_receive(:deliver_activation).and_return(true)
@@ -59,10 +59,8 @@ describe AccountsController do
     end
     
     describe 'when given invalid attributes' do
-      before do
+      before(:each) do
         Account.stub!(:new).and_return(@account = mock_model(Account, :save => false))
-        @account.should_receive(:site=).with(@@site)
-        Mailer.should_not_receive(:deliver_activation)
         
         post :create
       end
@@ -75,13 +73,13 @@ describe AccountsController do
   
   describe 'the verify action' do
     describe 'when given a valid id and verification key' do
-      before do
+      before(:each) do
         Account.stub!(:find_by_id_and_verification_key).and_return(@account = mock_model(Account, :activate! => true,
                                                                                                   :is_not_pending_recovery! => true))
       end
       
       describe 'and is an Account pending activation' do
-        before do
+        before(:each) do
           @account.stub!(:is_pending_activation?).and_return(true)
         end
         
@@ -95,7 +93,7 @@ describe AccountsController do
       end
       
       describe 'and is an Account pending recovery' do
-        before do
+        before(:each) do
           @account.stub!(:is_pending_activation?).and_return(false)
         end
         
@@ -110,7 +108,7 @@ describe AccountsController do
     end
     
     describe 'when given an invalid id or verification key' do
-      before do
+      before(:each) do
         Account.stub!(:find_by_id_and_verification_key).and_return(nil)
         
         put :verify, :id => 'id'
@@ -123,7 +121,7 @@ describe AccountsController do
   end
   
   describe 'the edit action' do
-    before do
+    before(:each) do
       Account.stub!(:find).and_return(mock_model(Account))
       
       get :edit, :id => 'id'
@@ -136,7 +134,7 @@ describe AccountsController do
   
   describe 'the update action' do
     describe 'when given valid attributes' do
-      before do
+      before(:each) do
         Account.stub!(:find).and_return(@account = mock_model(Account, :update_attributes => true))
       
         put :update, :id => 'id'
@@ -152,7 +150,7 @@ describe AccountsController do
     end
     
     describe 'when given invalid attributes' do
-      before do
+      before(:each) do
         Account.stub!(:find).and_return(@account = mock_model(Account, :update_attributes => false))
 
         put :update, :id => 'id'
@@ -170,7 +168,7 @@ describe AccountsController do
   
   describe 'the recover action' do
     describe 'when given a valid email address' do
-      before do
+      before(:each) do
         Account.stub!(:find_by_email_address).and_return(@account = mock_model(Account, :save => true,
                                                                                         :verification_key => 'value',
                                                                                         :email_address => 'value'))                                                                      
@@ -186,7 +184,7 @@ describe AccountsController do
     end
     
     describe 'when given an invalid email address' do
-      before do
+      before(:each) do
         Account.stub!(:find_by_email_address).and_return(nil)
         
         post :recover

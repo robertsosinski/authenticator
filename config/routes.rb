@@ -5,6 +5,8 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :logins
   
+  map.resources :sites
+  
   # map.connect ':controller/:action/:id'
   # map.connect ':controller/:action/:id.:format'
 end

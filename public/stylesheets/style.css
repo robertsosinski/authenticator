@@ -1,5 +1,3 @@
-/* @override http://localhost:3001/stylesheets/style.css?1216423275 */
-
 body {
 	margin: 0;
 	background-color: #e6e6e6;
@@ -14,7 +12,16 @@ a:hover {
 	text-decoration: none;
 }
 
+a:active {
+	outline: none; /* removes the dotted outline from active links in Firefox */
+}
+
+a:focus {
+	-moz-outline-style: none; /* removes the dotted outline from active links in Mozilla */
+}
+
 #header {
+	height: 30px;
 	padding: 10px 20px 10px 20px;
 	background-color: #003f82;
 	color: white;
@@ -23,8 +30,42 @@ a:hover {
 }
 
 #header h1 {
+	float: left;
 	margin: 5px;
 	font-size: 150%;
+}
+
+#header ul {
+	float: right;
+	width: 50%;
+	position: relative;
+	text-align: right;
+}
+
+#header ul li {
+	display: inline;
+}
+
+#header a {
+	color: white;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+#flash {
+	margin: 10px;
+	padding: 10px;
+	background-color: white;
+	border-right: 5px solid #999;
+	border-bottom: 5px solid #999;
+	font-weight: bold;
+	font-size: 120%;
+}
+
+#flash a {
+	font-size: 80%;
+	font-weight: normal;
+	font-style: normal;
 }
 
 #content {	
@@ -63,9 +104,11 @@ table#accounts td {
 }
 
 fieldset {
+	padding: 15px;
+	padding-top: 10px;
 	border: 1px solid #003f82;
+	margin-bottom: 1em;
 }
-
 
 legend {
 	font-size: 125%;
@@ -73,6 +116,8 @@ legend {
 }
 
 form label {
+	font-size: 110%;
+	font-weight: bold;
 	line-height: 2em;
 }
 
@@ -95,7 +140,7 @@ div.fieldWithErrors {
 #pagination a {
 	border-style: solid;
 	border-width: 1px;
-	padding: 4px 8px 4px 8px;
+	padding: 4px 7px 4px 7px;
 	text-decoration: none;
 }
 
