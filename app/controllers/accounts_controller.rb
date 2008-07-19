@@ -114,7 +114,6 @@ class AccountsController < ApplicationController
   
   def destroy
     @account = Account.find(params[:id])
-    flash[:notice] = "#{@account.email_address} has been deleted"
-    redirect_to(accounts_path)
+    @account.destroy
   end
 end

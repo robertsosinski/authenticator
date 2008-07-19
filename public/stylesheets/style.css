@@ -1,9 +1,9 @@
-/* @override http://localhost:3001/stylesheets/style.css?1216407324 */
+/* @override http://localhost:3001/stylesheets/style.css?1216423275 */
 
 body {
 	margin: 0;
 	background-color: #e6e6e6;
-	font: 90% "Lucida Grande", Lucida, Verdana, sans-serif;
+	font: 80% "Lucida Grande", Lucida, Verdana, sans-serif;
 }
 
 a {
@@ -18,9 +18,13 @@ a:hover {
 	padding: 10px 20px 10px 20px;
 	background-color: #003f82;
 	color: white;
-	font-size: 150%;
 	border-bottom-style: solid;
 	border-bottom-color: #002143;
+}
+
+#header h1 {
+	margin: 5px;
+	font-size: 150%;
 }
 
 #content {	
@@ -29,6 +33,10 @@ a:hover {
 	background-color: white;
 	border-right: 5px solid #999;
 	border-bottom: 5px solid #999;
+}
+
+#content h2 {
+	font-size: 150%;
 }
 
 table#accounts {
@@ -54,6 +62,32 @@ table#accounts td {
 	padding: 4px 10px 4px 10px;
 }
 
+fieldset {
+	border: 1px solid #003f82;
+}
+
+
+legend {
+	font-size: 125%;
+	font-weight: bold;
+}
+
+form label {
+	line-height: 2em;
+}
+
+div.fieldWithErrors {
+	display: inline;
+}
+
+.fieldWithErrors input {
+	border: 2px solid #900000;
+}
+
+.fieldWithErrors textarea {
+	border: 2px solid #900000;
+}
+
 #pagination {
 	margin-top: 10px;
 }
@@ -65,8 +99,11 @@ table#accounts td {
 	text-decoration: none;
 }
 
-#pagination .current {
+#pagination a:hover {
+	background-color: #ededed;
+}
 
+#pagination .current {
 	padding: 4px;
 	text-decoration: none;
 }

@@ -1,5 +1,7 @@
+<h2>Editing Account</h2>
+
 <fieldset>
-	<legend>Edit Account</legend>
+	<legend>Account</legend>
 
 	<% form_for @account do |f| %>
 
@@ -13,7 +15,9 @@
 
 		<%= f.label :password_confirmation %><br />
 		<%= f.password_field :password_confirmation, :value => '' %><br />
-
+		
+		<br />
+		
 		<%= submit_tag "Update" %>
 
 	<% end %>
