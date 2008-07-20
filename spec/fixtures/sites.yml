@@ -1,7 +1,7 @@
 capansis:
   accounts_count: 4
   domain: capansis.com
-  api_key: secret
+  api_key: 8a53afd0a55ef8f36779d74582d30cdbe903e425
   email_address: support@capansis.com
   support_title: Capansis Support
   activation_subject: Welcome To Capansis
@@ -11,7 +11,7 @@ capansis:
 
 ibm:
   accounts_count: 1
-  domain: ibm.com
+  domain: 9b5c0c92731f33fe87c25bdd1583cf2558c508f5
   api_key: secret
   email_address: support@ibm.com
   support_title: IBM Support

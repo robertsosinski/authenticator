@@ -1,4 +1,6 @@
+# Handles all interaction between an application and the Account model.
 class AccountsController < ApplicationController
+  # Returns a collection of Accounts.
   def index
     respond_to do |format|
       format.html do
@@ -11,6 +13,13 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Returns the specified Account.  There are two ways to interface with the show action, a get method or a find method.
+  #
+  # API methods:
+  #
+  #  Account.get(params[:id]) => Hash Table with the specified Account's attributes
+  # or,
+  #  Account.find(params[:id]) => Specified Account
   def show
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     respond_to do |format|
@@ -18,6 +27,11 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Returns a new Account.
+  #
+  # API method:
+  #
+  #  Account.new => New Account
   def new
     @account = Account.new
     respond_to do |format|
@@ -26,6 +40,15 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Creates and returns a new Account.
+  #
+  # API method:
+  #
+  #  @account = Account.new(params[:account]) => New Account
+  #  # if valid
+  #  @account.save => "true" and a copy of the compleated Account
+  #  # if invalid
+  #  @account.save => "false" and the errors
   def create
     @account = Account.new(params[:account])
     @account.site = @@site
@@ -43,11 +66,27 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Activates the specified account
   def activate
     @account = Account.find(params[:id])
     @account.activate!
   end
   
+  # Verifies an Account through the verification link sent to the Account owners email address.
+  #
+  # API method:
+  #
+  #  @account.put(:verify, :verification_key => params[:verification_key])
+  #
+  # If the Account cannot be verified, your application will be returned an ActiveResource::ResourceNotFound error.
+  # Just rescue this error as you normally would if this happens.
+  #
+  # Note, you can check if the Account is being activated or recovered by checking the activated attribute.
+  #
+  #  # if the verification is for a recovery
+  #  @account.activated? => true
+  #  # if the verification is for an activation
+  #  @account.activated? => false
   def verify
     account = Account.find_by_id_and_verification_key(params[:id], params[:verification_key])
     if account
@@ -62,6 +101,7 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Returns the specified Account.  If using the API, use the the show action through the find or get methods instead.
   def edit
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     respond_to do |format|
@@ -70,6 +110,18 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Updates and returns the specified Account.
+  #
+  # API method:
+  #
+  #  @account = Account.find(params[:id]).load(params[:account]) => Account loaded with new attributes
+  #  # if valid
+  #  @account.save => true
+  #  # if invalid
+  #  @account.save => false
+  #
+  # Note that the update_attributes method cannot be used, as it is not supported by ActiveResource>
+  # Use the load and save method instead.
   def update
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     if @account.update_attributes(params[:account])
@@ -90,6 +142,14 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Sends a recovery email to the Account's email address on record with a verification link.
+  #
+  # API method:
+  #
+  #  Account.post(:recover, :email_address => params[:email_address])
+  #
+  # If the email address cannot be found, your application will be returned an ActiveResource::ResourceNotFound error.
+  # Just rescue this error as you normally would if this happens.
   def recover
     account = Account.find_by_email_address(params[:email_address])
     if account
@@ -101,18 +161,15 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Bans the specified Account.
   def ban
     @account = Account.find(params[:id])
     @account.ban!
   end
   
+  # Unbans the specified Account.
   def unban
     @account = Account.find(params[:id])
     @account.unban!
-  end
-  
-  def destroy
-    @account = Account.find(params[:id])
-    @account.destroy
   end
 end

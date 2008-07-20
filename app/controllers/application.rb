@@ -1,3 +1,4 @@
+# Authenticates an application, protects the database from forgery and ensures plain text passwords never get logged.
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   
@@ -5,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   # See ActionController::RequestForgeryProtection for details
   # Uncomment the :secret if you're not using the cookie session store
-  # protect_from_forgery # :secret => 'bd5a91caae4a988a081624b70159ea0a'
+  protect_from_forgery # :secret => 'bd5a91caae4a988a081624b70159ea0a'
   
   # See ActionController::Base for details 
   # Uncomment this to filter the contents of submitted sensitive data parameters
@@ -14,6 +15,7 @@ class ApplicationController < ActionController::Base
   
   protected
   
+  # Authenticates API users for their application and their admin panel.
   def authenticate
     authenticate_or_request_with_http_basic do |user, password|
       @@site = Site.authenticate(user, password)
