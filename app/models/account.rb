@@ -1,6 +1,4 @@
-require 'digest/sha2'
-
-# Handles information neccessary to verify and manage users of a application, namely, their email address and password (which is encrypted).
+# Handles information neccessary to verify and manage users of a application.
 class Account < ActiveRecord::Base
   attr_accessor :password
   

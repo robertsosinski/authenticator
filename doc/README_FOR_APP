@@ -1,2 +1,69 @@
-Use this README file to introduce your application and point to useful places in the API for learning more.
-Run "rake doc:app" to generate API documentation for your models, controllers, helpers, and libraries.
+==Capansis Authentication
+
+Capansis Authentication is web service that allows you to easily implement a very secure and robust authentication system into your 
+application.  It provides a fully RESTful API using XML over HTTP and is secured using HTTP Basic Authentication.
+
+==Site Domain and API Key
+
+In order to incorporate Capansis Authentication into your application, you will first need a valid domain and API key, such as:
+
+Domain: capansis.com
+API Key: c144dccfa6d57711185083fb0336dcfa9b33ac61
+
+These credentials can then be used as a username and password via HTTP Basic Authentication 
+(e.g. http://capansis.com:c144dccfa6d57711185083fb0336dcfa9b33ac61@authentication.capansis.net) to interface your application with the 
+authentication service, or to login to the administration panel.
+
+==Making Requests to Capansis Authentication
+
+Requests to Capansis Authentication are made through URL's and HTTP verbs.  The URL represents a resource within the authentication service 
+(i.e. an Account), while the verb describes how you would like to interact with it.  There are four different verbs used.
+
+===Get
+Will retrieve a object from the authentication service, such as getting a users account information.
+
+===Post
+Will add a new object into the system, such as registering a new user or logging an existing user into the system.
+
+===Put
+Will change an existing object within the system, such as a user updating their email address or changing their password.
+
+===Delete
+Will remove an object from the system.
+
+These methods are used to interact with two objects via the API.
+
+===Account
+Represents the account for a user.
+
+===Login
+Represents the authenticated session for a user.
+
+==Accounts
+
+There are seven ways to interact with the Account resource.
+
+===Getting A Collection of Accounts
+
+To get a full collection of all users for a given site:
+
+<tt>curl -X GET -u domain:api_key http://authentication.capansis.com/accounts.xml</tt>
+
+You can also filter the collection by the first letter in a accounts email address by passing the the letter parameter:
+
+<tt>curl -X GET -u domain:api_key http://authentication.capansis.com/accounts.xml?letter=a</tt>
+
+===Getting A Single Account
+
+To get a single account, pass the accounts id:
+
+<tt>curl -X GET -u domain:api_key http://authentication.capansis.com/accounts/123456.xml</tt>
+
+If the account cannot be found, Capansis Authentication will return an error 404 Record Not Found error.
+
+===Creating A New Account
+
+To create a new account with Capansis Authentication, you must pass a new record via a POST request to the Account resource:
+
+<tt>curl -X POST -u domain:api_key -d "account[email_address]=name@domain.com&account[password]=password&account[password_confirmation]=password" http://authentication.capansis.com/accounts.xml</tt>
+

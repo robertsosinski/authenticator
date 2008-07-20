@@ -1,4 +1,4 @@
-# Handles sending any email messages.
+# Handles the sending of any email messages.
 class Mailer < ActionMailer::Base
   # Sends an Activation Letter to a newly created Account
   def activation(options)

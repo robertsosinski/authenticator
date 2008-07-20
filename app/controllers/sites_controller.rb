@@ -1,4 +1,4 @@
-# Handles all interaction between an application admin and the Site model.
+# Handles all interaction between a user and the Site model.
 class SitesController < ApplicationController
   # Returns the specified Site.
   def edit

@@ -1,4 +1,3 @@
-# Holds helpful methods that make view programming easier.
 module ApplicationHelper
   # Supplies the letters available for the letter based pagination  
   def letter_options

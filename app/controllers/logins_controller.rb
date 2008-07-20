@@ -1,4 +1,4 @@
-# Handles all interaction between an application and the Login model.
+# Handles all interaction between a user and the Login model.
 class LoginsController < ApplicationController  
   # Creates and returns a new Login object.
   #

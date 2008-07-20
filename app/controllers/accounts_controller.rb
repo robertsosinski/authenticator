@@ -1,29 +1,32 @@
-# Handles all interaction between an application and the Account model.
+# Handles all interaction between a user and the Account model.
 class AccountsController < ApplicationController
   # Returns a collection of Accounts.
   def index
+    @accounts = Account.find_by_site_id_and_letter(@@site.id, params[:letter])
     respond_to do |format|
-      format.html do
-        @accounts = Account.find_by_site_id_and_letter(@@site.id, params[:letter])
-      end
-      
-      format.xml do
-        head :not_found
-      end
+      format.html
+      format.xml {render :xml => @accounts}  
     end
   end
   
-  # Returns the specified Account.  There are two ways to interface with the show action, a get method or a find method.
+  # Returns the specified Account.
   #
   # API methods:
   #
+  # There are two ways to interface with the show action, a get method or a find method.
+  #
   #  Account.get(params[:id]) => Hash Table with the specified Account's attributes
-  # or,
+  # or
   #  Account.find(params[:id]) => Specified Account
   def show
+    begin
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     respond_to do |format|
+      format.html{render :nothing => true}
       format.xml {render :xml => @account}
+    end
+    rescue ActiveRecord::RecordNotFound
+      render :nothing => true, :status => :not_found
     end
   end
   
@@ -35,7 +38,7 @@ class AccountsController < ApplicationController
   def new
     @account = Account.new
     respond_to do |format|
-      format.html
+      format.html{render :nothing => true}
       format.xml {render :xml => Account.new}
     end
   end
@@ -46,33 +49,33 @@ class AccountsController < ApplicationController
   #
   #  @account = Account.new(params[:account]) => New Account
   #  # if valid
-  #  @account.save => "true" and a copy of the compleated Account
+  #  @account.save => true, and a copy of the compleated Account
   #  # if invalid
-  #  @account.save => "false" and the errors
+  #  @account.save => false, and the errors
   def create
     @account = Account.new(params[:account])
     @account.site = @@site
     if @account.save
       Mailer.deliver_activation(:site => @@site, :account => @account)
       respond_to do |format|
-        format.html
+        format.html{render :nothing => true}
         format.xml {render :xml => @account, :status => :created, :location => @account}
       end
     else
       respond_to do |format|
-        format.html
+        format.html{render :nothing => true}
         format.xml {render :xml => @account.errors, :status => :unprocessable_entity}
       end
     end
   end
   
-  # Activates the specified account
+  # Activates the specified account.
   def activate
     @account = Account.find(params[:id])
     @account.activate!
   end
   
-  # Verifies an Account through the verification link sent to the Account owners email address.
+  # Verifies an Account with a verification link sent to the Account owners email address.
   #
   # API method:
   #
@@ -101,7 +104,8 @@ class AccountsController < ApplicationController
     end
   end
   
-  # Returns the specified Account.  If using the API, use the the show action through the find or get methods instead.
+  # Returns the specified Account.
+  # If using the API, use the the show action through the find or get methods instead.
   def edit
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     respond_to do |format|
@@ -120,7 +124,7 @@ class AccountsController < ApplicationController
   #  # if invalid
   #  @account.save => false
   #
-  # Note that the update_attributes method cannot be used, as it is not supported by ActiveResource>
+  # Note that the update_attributes method cannot be used, as it is not supported by ActiveResource.
   # Use the load and save method instead.
   def update
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
@@ -142,7 +146,7 @@ class AccountsController < ApplicationController
     end
   end
   
-  # Sends a recovery email to the Account's email address on record with a verification link.
+  # Sends a recovery letter to the Account's email address on record with a verification link.
   #
   # API method:
   #
