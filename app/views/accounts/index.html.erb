@@ -40,9 +40,7 @@
 	
 </table>
 
-<div id ="pagination">	
-	<%= link_to "all", accounts_path %>
-	
+<div id ="pagination">		
   <% letter_options.each do |letter| %>
     <% if params[:letter] == letter %>
       <span class="current"><%= letter %></span>

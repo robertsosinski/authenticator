@@ -1,4 +1,5 @@
-# Handles all interaction between a user and the Site model.
+# Handles all interaction between a user and the Site model.  This controller can be interacted with through it's 
+# HTML based administartion panel, which is secured using HTTP Basic Authentication.
 class SitesController < ApplicationController
   # Returns the specified Site.
   def edit

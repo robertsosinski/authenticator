@@ -35,8 +35,22 @@ describe Account do
     end
   end
   
+  describe 'self.find_by_site_id_and_letter method' do
+    describe 'when passed the letter "a"' do
+      it 'should return all accounts with an email address starting with the letter "a"' do
+        Account.find_by_site_id_and_letter(sites(:capansis).id, 'a').should eql([accounts(:alice)])
+      end
+    end
+    
+    describe 'when passed the "#" symbol' do
+      it 'should return all accounts with an email address starting with a number' do
+        Account.find_by_site_id_and_letter(sites(:capansis).id, '#').should eql([accounts(:numbers)])
+      end
+    end
+  end
+  
   describe 'password_is? method' do
-    before do
+    before(:each) do
       @account = Account.find(accounts(:alice))
     end
     
@@ -51,7 +65,7 @@ describe Account do
   
   describe 'is_pending_activation? method' do
     describe 'on an account pending activation' do
-      before do
+      before(:each) do
         @account = Account.find(accounts(:bob))
       end
     
@@ -61,7 +75,7 @@ describe Account do
     end
     
     describe 'on an account not pending activation' do
-      before do
+      before(:each) do
         @account = Account.find(accounts(:alice))
       end
       
@@ -72,7 +86,7 @@ describe Account do
   end
   
   describe 'activate! method' do
-    before do
+    before(:each) do
       @account = Account.find(accounts(:bob))
     end
     
@@ -85,7 +99,7 @@ describe Account do
   
   describe 'is_pending_recovery? method' do
     describe 'on an account pending recovery' do
-      before do
+      before(:each) do
         @account = Account.find(accounts(:casey))
       end
     
@@ -95,7 +109,7 @@ describe Account do
     end
     
     describe 'on an account not pending recovery' do
-      before do
+      before(:each) do
         @account = Account.find(accounts(:alice))
       end
       
@@ -106,7 +120,7 @@ describe Account do
   end
   
   describe 'is_pending_recovery! method' do
-    before do
+    before(:each) do
       @account = Account.find(accounts(:alice))
     end
     
@@ -118,7 +132,7 @@ describe Account do
   end
   
   describe 'is_not_pending_recovery! method' do
-    before do
+    before(:each) do
       @account = Account.find(accounts(:casey))
     end
     
@@ -130,7 +144,7 @@ describe Account do
   end
   
   describe 'ban! method' do
-    before do
+    before(:each) do
       @account = Account.find(accounts(:alice))
     end
     
@@ -142,7 +156,7 @@ describe Account do
   end
   
   describe 'unban! method' do
-    before do
+    before(:each) do
       @account = Account.find(accounts(:mallory))
     end
     
@@ -155,7 +169,7 @@ describe Account do
   
   describe 'when created' do
     describe 'with valid credentials' do
-      before do
+      before(:each) do
         @account = Account.create({
           :email_address => 'dave@capansis.com',
           :password => 'password',
@@ -175,7 +189,7 @@ describe Account do
     end
     
     describe 'with invalid credentials' do
-      before do
+      before(:each) do
         @account = Account.create({
           :email_address => 'not an email address',
           :password => 'short',
@@ -201,15 +215,13 @@ describe Account do
     end
     
     describe 'without a unique email address' do
-      before do
+      before(:each) do
         @account = Account.create({
           :site_id => sites(:capansis).id,
           :email_address => 'alice@capansis.com',
           :password => 'secret',
           :password_confirmation => 'secret'
         })
-        
-        # @account.site = sites(:capansis)
       end
       
       it 'should be marked as invalid and not saved' do
@@ -228,7 +240,7 @@ describe Account do
     end
     
     describe 'without a password' do
-      before do
+      before(:each) do
         @account = Account.create({
           :email_address => 'new.user@capansis.com',
           :password => nil,
@@ -252,7 +264,7 @@ describe Account do
     end
     
     describe 'with a blank password' do
-      before do
+      before(:each) do
         @account = Account.create({
           :email_address => 'new.user@capansis.com',
           :password => '',
@@ -278,7 +290,7 @@ describe Account do
   
   describe 'when updated' do
     describe 'with a new password' do
-      before do
+      before(:each) do
         @account = Account.find(accounts(:alice))
         @account.update_attributes({
           :password => 'changing',
@@ -293,7 +305,7 @@ describe Account do
     end
     
     describe 'without a new password' do
-      before do
+      before(:each) do
         @account = Account.find(accounts(:alice))
         @account.update_attributes({
           :email_address => 'changed@capansis.com',
@@ -313,7 +325,7 @@ describe Account do
     end
     
     describe 'with a blank password' do
-      before do
+      before(:each) do
         @account = Account.find(accounts(:alice))
         @account.update_attributes({
           :email_address => 'changed@capansis.com',

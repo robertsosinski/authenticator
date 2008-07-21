@@ -23,6 +23,8 @@ class Account < ActiveRecord::Base
   
   after_validation :flush_passwords
   
+  before_save :scrub_email_address
+  
   before_create :save_verification_key
   
   # Finds an account by an email address and then verifies it with a password.
@@ -33,7 +35,7 @@ class Account < ActiveRecord::Base
     end
   end
   
-  # Finds an account by an id and then verifies it with the verification key generated during creation or recovery.
+  # Finds an account by an id and then verifies it with the verification key generated during its creation or recovery.
   def self.find_by_id_and_verification_key(id, verification_key)
     ##
     # It is very important to check if the verification_key is nil or else passing a nil
@@ -42,9 +44,9 @@ class Account < ActiveRecord::Base
     verification_key.nil? ? nil : self.find_by_id(id, :conditions => {:verification_key => verification_key})
   end
   
-  # Finds all accounts that belong to a site that start with a given letter.
-  # If no letter is given, it will return all accounts for a site.
-  def self.find_by_site_id_and_letter(site_id, letter)
+  # Finds all accounts that that start with a number or a given letter.
+  # If no letter is given, it will return all accounts.
+  def self.find_by_site_id_and_letter(site_id, letter = 'a')
     if letter == '#'
       @accounts = Account.find(:all, :conditions => ["email_address REGEXP ? AND site_id = ?", "^[^a-z]", site_id], :order => 'email_address')
     else
@@ -62,7 +64,7 @@ class Account < ActiveRecord::Base
     end
   end
   
-  # Lets a console user verify a password.
+  # Verifies a password.
   #
   #  # Password is 'super secret'
   #  @account.password_is?('secret') => false
@@ -76,7 +78,7 @@ class Account < ActiveRecord::Base
     ! self.activated? and self.verification_key ? true : false
   end
   
-  # Activates an Account
+  # Activates an Account.
   def activate!
     self.update_attributes(:activated => true, :verification_key => nil) if self.is_pending_activation?
   end  
@@ -109,15 +111,20 @@ class Account < ActiveRecord::Base
     
   private
   
-  # Checks if the Account is being updated without a password, and if it is,
-  # assums the Account owner does not want to change their password.
+  # Checks if the Account is being updated without a password, and if so,
+  # assumes the Account owner does not want to change their password.
   def skip_password_encryption_and_validation?
     self.id and self.password.blank?
   end
   
-  # Removes the plain text password and password confirmation from the system
+  # Removes the plain text password and password confirmation from the system.
   def flush_passwords
     @password = @password_confirmation = nil
+  end
+  
+  # Ensures that an email address only includes lowercase letters.
+  def scrub_email_address
+    self.email_address.downcase
   end
   
   # Saves a randomly generated verification key to the specified account.

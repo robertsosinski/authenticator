@@ -22,24 +22,52 @@ describe AccountsController do
   describe 'the show action' do
     before(:each) do
       Account.stub!(:find).and_return(mock_model(Account))
-      
-      get :show, :id => 'id'
     end
     
-    it 'should be successful' do
-      response.should be_success
+    describe 'in html format' do
+      before(:each) do
+        get :show, :id => 'id'
+      end
+      
+      it 'should be yield an Unsupported Media Type error' do
+        response.should be_unsupported_media_type
+      end
+    end
+    
+    describe 'in xml format' do
+      before(:each) do
+        get :show, :id => 'id', :format => 'xml'
+      end
+      
+      it 'should be successful' do
+        response.should be_success
+      end
     end
   end
   
   describe 'the new action' do
     before(:each) do
       Account.stub!(:new).and_return(mock_model(Account))
-      
-      get :new
     end
     
-    it 'should be successful' do
-      response.should be_success
+    describe 'in html format' do
+      before(:each) do
+        get :new
+      end
+      
+      it 'should yield Unsupported Media Type error' do
+        response.should be_unsupported_media_type
+      end
+    end
+    
+    describe 'in xml format' do
+      before(:each) do
+        get :new, :format => 'xml'
+      end
+      
+      it 'should be successful' do
+        response.should be_success
+      end
     end
   end
   
@@ -49,25 +77,71 @@ describe AccountsController do
         Account.stub!(:new).and_return(@account = mock_model(Account, :save => true))
         @account.should_receive(:site=).with(@@site)
         Mailer.should_receive(:deliver_activation).and_return(true)
-        
-        post :create
       end
       
-      it 'should be created' do
-        response.should be_created
+      describe 'in html format' do
+        before(:each) do
+          post :create
+        end
+        
+        it 'should yield Unsupported Media Type error' do
+          response.should be_unsupported_media_type
+        end
+      end
+      
+      describe 'in xml format' do
+        before(:each) do          
+          post :create, :format => 'xml'
+        end
+        
+        it 'should be created' do
+          response.should be_created
+        end
       end
     end
     
-    describe 'when given invalid attributes' do
+    describe 'when given invalid attributes' do    
       before(:each) do
         Account.stub!(:new).and_return(@account = mock_model(Account, :save => false))
-        
-        post :create
+        @account.should_receive(:site=).with(@@site)
       end
       
-      it 'should be unprocessable' do
-        response.should be_unprocessable_entity
+      describe 'in html format' do
+        before(:each) do
+          post :create
+        end
+        
+        it 'should yield Unsupported Media Type error' do
+          response.should be_unsupported_media_type
+        end
       end
+      
+      describe 'in xml format' do
+        before(:each) do
+          post :create, :format => 'xml'
+        end
+        
+        it 'should be unprocessable' do
+          response.should be_unprocessable_entity
+        end
+      end
+    end
+  end
+  
+  describe 'the activate action' do
+    before(:each) do
+      Account.stub!(:find).and_return(@account = mock_model(Account, :activate! => true))
+      @account.should_receive(:activate!)
+      
+      put :activate, :id => 'id', :format => 'js'
+    end
+    
+    it 'should assign @account to the specified Account' do
+      assigns[:account].should equal(@account)
+    end
+    
+    it 'should render the activate rjs' do
+      response.should render_template(:activate)
     end
   end
   
@@ -122,11 +196,15 @@ describe AccountsController do
   
   describe 'the edit action' do
     before(:each) do
-      Account.stub!(:find).and_return(mock_model(Account))
-      
+      Account.stub!(:find).and_return(@account = mock_model(Account))
+    
       get :edit, :id => 'id'
     end
     
+    it 'should assign @account to the specified Account' do
+      assigns[:account].should equal(@account)
+    end
+  
     it 'should be successful' do
       response.should be_success
     end
@@ -136,32 +214,64 @@ describe AccountsController do
     describe 'when given valid attributes' do
       before(:each) do
         Account.stub!(:find).and_return(@account = mock_model(Account, :update_attributes => true))
-      
-        put :update, :id => 'id'
       end
       
-      it 'should assign @account to the specified Account' do
-        assigns[:account].should equal(@account)
+      describe 'in html format' do
+        before(:each) do
+          put :update, :id => 'id'
+        end
+
+        it 'should assign @account to the specified Account' do
+          assigns[:account].should equal(@account)
+        end
+
+        it 'should be redirect to the accounts index' do
+          response.should redirect_to(accounts_path)
+        end
       end
       
-      it 'should be success' do
-        response.should be_success
+      describe 'in xml format' do
+        before(:each) do
+          put :update, :id => 'id', :format => 'xml'
+        end
+
+        it 'should assign @account to the specified Account' do
+          assigns[:account].should equal(@account)
+        end
+
+        it 'should be success' do
+          response.should be_success
+        end
       end
     end
     
     describe 'when given invalid attributes' do
       before(:each) do
         Account.stub!(:find).and_return(@account = mock_model(Account, :update_attributes => false))
-
-        put :update, :id => 'id'
       end
       
-      it 'should assign @account to the specified Account' do
-        assigns[:account].should equal(@account)
+      describe 'in html format' do
+        before(:each) do
+          put :update, :id => 'id'
+        end
+        
+        it 'should render the new template' do
+          response.should render_template(:edit)
+        end
       end
       
-      it 'should be unprocessable' do
-        response.should be_unprocessable_entity
+      describe 'in xml format' do
+        before(:each) do
+          put :update, :id => 'id', :format => 'xml'
+        end
+      
+        it 'should assign @account to the specified Account' do
+          assigns[:account].should equal(@account)
+        end
+      
+        it 'should be unprocessable' do
+          response.should be_unprocessable_entity
+        end
       end
     end
   end
@@ -193,6 +303,40 @@ describe AccountsController do
       it 'should not be found' do
         response.should be_missing
       end
+    end
+  end
+  
+  describe 'the ban action' do
+    before(:each) do
+      Account.stub!(:find).and_return(@account = mock_model(Account, :ban! => true))
+      @account.should_receive(:ban!)
+      
+      put :ban, :id => 'id', :format => 'js'
+    end
+    
+    it 'should assign @account to the specified Account' do
+      assigns[:account].should equal(@account)
+    end
+    
+    it 'should render the activate rjs' do
+      response.should render_template(:ban)
+    end
+  end
+  
+  describe 'the unban action' do
+    before(:each) do
+      Account.stub!(:find).and_return(@account = mock_model(Account, :unban! => true))
+      @account.should_receive(:unban!)
+      
+      put :unban, :id => 'id', :format => 'js'
+    end
+    
+    it 'should assign @account to the specified Account' do
+      assigns[:account].should equal(@account)
+    end
+    
+    it 'should render the activate rjs' do
+      response.should render_template(:unban)
     end
   end
 end

@@ -1,9 +1,10 @@
 # Additional HTTP Responses for RSpec
 module HTTPResponseValidations
-  HTTP_CREATED              = "201 Created"
-  HTTP_ACCEPTED             = "202 Accepted"
-  HTTP_UNAUTHORIZED         = "401 Unauthorized"
-  HTTP_UNPROCESSABLE_ENTITY = "422 Unprocessable Entity"
+  HTTP_CREATED                = "201 Created"
+  HTTP_ACCEPTED               = "202 Accepted"
+  HTTP_UNAUTHORIZED           = "401 Unauthorized"
+  HTTP_UNSUPPORTED_MEDIA_TYPE = "415 Unsupported Media Type"
+  HTTP_UNPROCESSABLE_ENTITY   = "422 Unprocessable Entity"
   
   # Tests that a 201 Created response is received
   class BeCreated
@@ -74,6 +75,29 @@ module HTTPResponseValidations
     end
   end
   
+  # Tests that a 415 Unsupported Media Type response is received
+  class BeUnsupportedMediaType
+    def initialize
+      @http_code = HTTP_UNSUPPORTED_MEDIA_TYPE
+    end
+    
+    # Matches the actual and expected response
+    def matches?(response)
+      @status  = response.headers["Status"]
+      @status == @http_code
+    end
+    
+    # Returns a failure message when called by a positive "should" match
+    def failure_message
+      "expected status to be '#{@http_code}' but received '#{@status}'"
+    end
+    
+    # Returns a failure message when called by a negative "should_not" match
+    def negative_failure_message
+      "expected status to not be '#{@http_code}' but received '#{@status}'"
+    end
+  end
+  
   # Tests that a 422 Unprocessable Entity response is received
   class BeUnprocessableEntity
     def initialize
@@ -109,6 +133,11 @@ module HTTPResponseValidations
   # Calls the BeUnauthroized class
   def be_unauthorized
     BeUnauthorized.new
+  end
+  
+  # Calls the BeUnproccessableEntity class
+  def be_unsupported_media_type
+    BeUnsupportedMediaType.new
   end
   
   # Calls the BeUnproccessableEntity class

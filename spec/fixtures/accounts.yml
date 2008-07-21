@@ -35,6 +35,15 @@ mallory: # banned
   encrypted_password: ef71e259b65ff0fc5dfd2101a194d3abe22a2114030e9a7487b8d4104b2c697f
   activated: true
   banned: true
+  
+numbers: # testing the letter based pagination method
+  site: capansis
+  email_address: 12345@capansis.com
+  salt: ErNX9T6P
+  # password: numbers
+  encrypted_password: 77e01bc85a50f68cd3efc00c92bb392e2c0937eb30fecd76bedf8f72679fe68f
+  activated: true
+  banned: false
 
 alice_2: #activated
   site: ibm

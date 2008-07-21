@@ -11,8 +11,8 @@ capansis:
 
 ibm:
   accounts_count: 1
-  domain: 9b5c0c92731f33fe87c25bdd1583cf2558c508f5
-  api_key: secret
+  domain: ibm.com
+  api_key: 9b5c0c92731f33fe87c25bdd1583cf2558c508f5
   email_address: support@ibm.com
   support_title: IBM Support
   activation_subject: Welcome To IBM

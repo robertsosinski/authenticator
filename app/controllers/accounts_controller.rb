@@ -1,7 +1,10 @@
-# Handles all interaction between a user and the Account model.
+# Handles all interaction between a user and the Account model.  This controller can be interacted with through it's 
+# XML based API or it's HTML based administartion panel, both of which are secured using HTTP Basic Authentication.
 class AccountsController < ApplicationController
-  # Returns a collection of Accounts.
+  # Returns a collection of Accounts.  The user can also pass a letter parameter to filter the results 
+  # by the first letter in the email address.
   def index
+    params[:letter] ||= 'a'
     @accounts = Account.find_by_site_id_and_letter(@@site.id, params[:letter])
     respond_to do |format|
       format.html
@@ -19,33 +22,29 @@ class AccountsController < ApplicationController
   # or
   #  Account.find(params[:id]) => Specified Account
   def show
-    begin
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     respond_to do |format|
-      format.html{render :nothing => true}
+      format.html{render :nothing => true, :status => :unsupported_media_type}
       format.xml {render :xml => @account}
-    end
-    rescue ActiveRecord::RecordNotFound
-      render :nothing => true, :status => :not_found
     end
   end
   
   # Returns a new Account.
   #
-  # API method:
+  # API methods:
   #
   #  Account.new => New Account
   def new
     @account = Account.new
     respond_to do |format|
-      format.html{render :nothing => true}
-      format.xml {render :xml => Account.new}
+      format.html{render :nothing => true, :status => :unsupported_media_type}
+      format.xml {render :xml => @account}
     end
   end
   
-  # Creates and returns a new Account.
+  # Creates and returns an Account.
   #
-  # API method:
+  # API methods:
   #
   #  @account = Account.new(params[:account]) => New Account
   #  # if valid
@@ -58,18 +57,18 @@ class AccountsController < ApplicationController
     if @account.save
       Mailer.deliver_activation(:site => @@site, :account => @account)
       respond_to do |format|
-        format.html{render :nothing => true}
+        format.html{render :nothing => true, :status => :unsupported_media_type}
         format.xml {render :xml => @account, :status => :created, :location => @account}
       end
     else
       respond_to do |format|
-        format.html{render :nothing => true}
+        format.html{render :nothing => true, :status => :unsupported_media_type}
         format.xml {render :xml => @account.errors, :status => :unprocessable_entity}
       end
     end
   end
   
-  # Activates the specified account.
+  # Activates the specified account.  Used by the admin panel.
   def activate
     @account = Account.find(params[:id])
     @account.activate!
@@ -77,7 +76,7 @@ class AccountsController < ApplicationController
   
   # Verifies an Account with a verification link sent to the Account owners email address.
   #
-  # API method:
+  # API methods:
   #
   #  @account.put(:verify, :verification_key => params[:verification_key])
   #
@@ -116,7 +115,7 @@ class AccountsController < ApplicationController
   
   # Updates and returns the specified Account.
   #
-  # API method:
+  # API methods:
   #
   #  @account = Account.find(params[:id]).load(params[:account]) => Account loaded with new attributes
   #  # if valid
@@ -148,7 +147,7 @@ class AccountsController < ApplicationController
   
   # Sends a recovery letter to the Account's email address on record with a verification link.
   #
-  # API method:
+  # API methods:
   #
   #  Account.post(:recover, :email_address => params[:email_address])
   #
@@ -165,13 +164,13 @@ class AccountsController < ApplicationController
     end
   end
   
-  # Bans the specified Account.
+  # Bans the specified Account.  Used by the admin panel.
   def ban
     @account = Account.find(params[:id])
     @account.ban!
   end
   
-  # Unbans the specified Account.
+  # Unbans the specified Account.  Used by the admin panel.
   def unban
     @account = Account.find(params[:id])
     @account.unban!

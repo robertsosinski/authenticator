@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Login do
   describe 'authenticate_account callback method' do
     describe 'when given valid credentials' do
-      before do
+      before(:each) do
         @login = Login.create({
           :email_address => 'alice@capansis.com',
           :password => 'secret',
@@ -17,7 +17,7 @@ describe Login do
     end
     
     describe 'when given invalid credentials' do
-      before do
+      before(:each) do
         @login = Login.create({
           :email_address => 'eve@yahoo.com',
           :password => 'invalid',
@@ -33,7 +33,7 @@ describe Login do
   
   describe 'ensure_account_is_not_pending_recovery callback method' do
     describe 'when sent to an account is pending recovery' do
-      before do
+      before(:each) do
         @login = Login.create({
           :email_address => 'casey@capansis.com',
           :password => 'forgot',
