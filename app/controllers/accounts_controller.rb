@@ -1,8 +1,11 @@
-# Handles all interaction between a user and the Account model.  This controller can be interacted with through it's 
-# XML based API or it's HTML based administartion panel, both of which are secured using HTTP Basic Authentication.
+# Handles the interaction between a user and the Account model.  This controller can be interacted with through it's 
+# XML based API or it's HTML based administartion panel.
 class AccountsController < ApplicationController
-  # Returns a collection of Accounts.  The user can also pass a letter parameter to filter the results 
-  # by the first letter in the email address.
+  # Returns a collection of filtered first letter of an accounts email address.
+  #
+  # API via ActiveResource:
+  #
+  #  Account.find(:all, :params => {:letter => params[:letter]}) => Collection of Accounts
   def index
     params[:letter] ||= 'a'
     @accounts = Account.find_by_site_id_and_letter(@@site.id, params[:letter])
@@ -14,61 +17,40 @@ class AccountsController < ApplicationController
   
   # Returns the specified Account.
   #
-  # API methods:
+  # API via ActiveResource:
   #
-  # There are two ways to interface with the show action, a get method or a find method.
-  #
-  #  Account.get(params[:id]) => Hash Table with the specified Account's attributes
-  # or
   #  Account.find(params[:id]) => Specified Account
   def show
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     respond_to do |format|
-      format.html{render :nothing => true, :status => :unsupported_media_type}
+      format.html{head :status => :unsupported_media_type}
       format.xml {render :xml => @account}
     end
   end
   
-  # Returns a new Account.
+  # Creates a new Account and returns it to the user.
   #
-  # API methods:
-  #
-  #  Account.new => New Account
-  def new
-    @account = Account.new
-    respond_to do |format|
-      format.html{render :nothing => true, :status => :unsupported_media_type}
-      format.xml {render :xml => @account}
-    end
-  end
-  
-  # Creates and returns an Account.
-  #
-  # API methods:
+  # API via ActiveResource:
   #
   #  @account = Account.new(params[:account]) => New Account
-  #  # if valid
-  #  @account.save => true, and a copy of the compleated Account
-  #  # if invalid
-  #  @account.save => false, and the errors
   def create
     @account = Account.new(params[:account])
     @account.site = @@site
     if @account.save
       Mailer.deliver_activation(:site => @@site, :account => @account)
       respond_to do |format|
-        format.html{render :nothing => true, :status => :unsupported_media_type}
+        format.html{head :unsupported_media_type}
         format.xml {render :xml => @account, :status => :created, :location => @account}
       end
     else
       respond_to do |format|
-        format.html{render :nothing => true, :status => :unsupported_media_type}
+        format.html{head :unsupported_media_type}
         format.xml {render :xml => @account.errors, :status => :unprocessable_entity}
       end
     end
   end
   
-  # Activates the specified account.  Used by the admin panel.
+  # Activates the specified account.  Used only by the admin panel.
   def activate
     @account = Account.find(params[:id])
     @account.activate!
@@ -76,7 +58,7 @@ class AccountsController < ApplicationController
   
   # Verifies an Account with a verification link sent to the Account owners email address.
   #
-  # API methods:
+  # API via ActiveResource:
   #
   #  @account.put(:verify, :verification_key => params[:verification_key])
   #
@@ -103,28 +85,21 @@ class AccountsController < ApplicationController
     end
   end
   
-  # Returns the specified Account.
-  # If using the API, use the the show action through the find or get methods instead.
+  # Returns a form to edit the specified Account.  Used only by the admin panel.
   def edit
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     respond_to do |format|
       format.html
-      format.xml {render :xml => @account}
+      format.xml {head :unsupported_media_type}
     end
   end
   
   # Updates and returns the specified Account.
   #
-  # API methods:
+  # API via ActiveResource:
   #
   #  @account = Account.find(params[:id]).load(params[:account]) => Account loaded with new attributes
-  #  # if valid
-  #  @account.save => true
-  #  # if invalid
-  #  @account.save => false
-  #
-  # Note that the update_attributes method cannot be used, as it is not supported by ActiveResource.
-  # Use the load and save method instead.
+  #  @account.save => Updated Account
   def update
     @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
     if @account.update_attributes(params[:account])
@@ -147,7 +122,7 @@ class AccountsController < ApplicationController
   
   # Sends a recovery letter to the Account's email address on record with a verification link.
   #
-  # API methods:
+  # API via ActiveResource:
   #
   #  Account.post(:recover, :email_address => params[:email_address])
   #

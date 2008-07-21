@@ -45,32 +45,6 @@ describe AccountsController do
     end
   end
   
-  describe 'the new action' do
-    before(:each) do
-      Account.stub!(:new).and_return(mock_model(Account))
-    end
-    
-    describe 'in html format' do
-      before(:each) do
-        get :new
-      end
-      
-      it 'should yield Unsupported Media Type error' do
-        response.should be_unsupported_media_type
-      end
-    end
-    
-    describe 'in xml format' do
-      before(:each) do
-        get :new, :format => 'xml'
-      end
-      
-      it 'should be successful' do
-        response.should be_success
-      end
-    end
-  end
-  
   describe 'the create action' do
     describe 'when given valid attributes' do
       before(:each) do

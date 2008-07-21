@@ -1,5 +1,5 @@
-# Handles all interaction between a user and the Login model.  This controller can be interacted with through it's 
-# XML based API, which is secured using HTTP Basic Authentication.
+# Handles all interaction between a user and the Login model.  This controller can only be interacted with through it's 
+# XML based API.
 class LoginsController < ApplicationController  
   # Creates and returns a new Login object.
   #

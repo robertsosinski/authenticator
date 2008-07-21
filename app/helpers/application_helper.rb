@@ -1,5 +1,5 @@
 module ApplicationHelper
-  # Supplies the letters available for the letter based pagination  
+  # Supplies the letters needed for letter based pagination.
   def letter_options
     $letter_options_list = ['#'].concat(('a'..'z').to_a)
   end

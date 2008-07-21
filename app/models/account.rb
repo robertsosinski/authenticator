@@ -1,4 +1,4 @@
-# Handles information neccessary to verify and manage users of a application.
+# Stores, manages and verifies user credentials.
 class Account < ActiveRecord::Base
   attr_accessor :password
   
@@ -27,7 +27,7 @@ class Account < ActiveRecord::Base
   
   before_create :save_verification_key
   
-  # Finds an account by an email address and then verifies it with a password.
+  # Finds an account with the email address and then verifies it with the password.
   def self.find_by_email_address_and_password(site_id, email_address, password)
     account = self.find_by_email_address(email_address, :conditions => {:site_id => site_id})
     if account and account.encrypted_password == ENCRYPT.hexdigest(password + account.salt)
@@ -35,7 +35,7 @@ class Account < ActiveRecord::Base
     end
   end
   
-  # Finds an account by an id and then verifies it with the verification key generated during its creation or recovery.
+  # Finds an account with the id and then verifies it with the verification key generated during its creation or recovery.
   def self.find_by_id_and_verification_key(id, verification_key)
     ##
     # It is very important to check if the verification_key is nil or else passing a nil
@@ -54,7 +54,7 @@ class Account < ActiveRecord::Base
     end
   end
   
-  # Generates a random 8 character Base64 salt and uses it to encrypt the given password with SHA256.
+  # Generates a random 8 character Base64 salt and uses it to encrypt the plain text password with SHA256.
   def password=(password)
     @password = password ||= ''
     @password_confirmation ||= ''
@@ -73,7 +73,7 @@ class Account < ActiveRecord::Base
     ENCRYPT.hexdigest(password + self.salt) == self.encrypted_password
   end
   
-  # Returns true if the Account is pending activation.
+  # Cheks if the acount is pending activation.
   def is_pending_activation?
     ! self.activated? and self.verification_key ? true : false
   end
@@ -83,7 +83,7 @@ class Account < ActiveRecord::Base
     self.update_attributes(:activated => true, :verification_key => nil) if self.is_pending_activation?
   end  
   
-  # Returns true if the Account is pending recovery.
+  # Checks if the Account is pending recovery.
   def is_pending_recovery?
     self.activated? and self.verification_key ? true : false
   end
@@ -117,7 +117,7 @@ class Account < ActiveRecord::Base
     self.id and self.password.blank?
   end
   
-  # Removes the plain text password and password confirmation from the system.
+  # Removes the plain text password and password confirmation from cache.
   def flush_passwords
     @password = @password_confirmation = nil
   end
@@ -127,7 +127,7 @@ class Account < ActiveRecord::Base
     self.email_address.downcase
   end
   
-  # Saves a randomly generated verification key to the specified account.
+  # Assigns a randomly generated verification key to the specified account.
   def save_verification_key
     self.verification_key = KeyGenerator.create
   end

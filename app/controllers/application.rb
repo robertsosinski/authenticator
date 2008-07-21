@@ -1,4 +1,5 @@
-# Authenticates an application and filters plain text passwords from the log
+# Authenticates the service through HTTP Authentication Basic and filters passwords from the logs.
+# NOTE: Forgery protection is turned off in order to allow other non-Rails applications to interact via the API.
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   
@@ -15,7 +16,7 @@ class ApplicationController < ActionController::Base
   
   protected
   
-  # Authenticates API users for their application and their admin panel.
+  # Authenticates the API and admin panel.
   def authenticate
     authenticate_or_request_with_http_basic do |user, password|
       @@site = Site.authenticate(user, password)

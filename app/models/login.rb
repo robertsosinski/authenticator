@@ -30,7 +30,7 @@ class Login < ActiveRecord::Base
     end
   end
   
-  # A login callback that clears the verification key from an account if a recovery was requested.  This is good if the account owner
+  # A login callback that clears the verification key from an account if a recovery was requested.  This is good if an account owner
   # requests a recovery, then remembers their password and logs in without clicking the link in the recovery letter.  
   def ensure_account_is_not_pending_recovery
     self.match.is_not_pending_recovery!
