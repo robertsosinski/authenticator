@@ -67,10 +67,10 @@ class AccountsController < ApplicationController
   #
   # Note, you can check if the Account is being activated or recovered by checking the activated attribute.
   #
-  #  # if the verification is for a recovery
-  #  @account.activated? => true
-  #  # if the verification is for an activation
+  #  # If the verification is for an activation
   #  @account.activated? => false
+  #  # If the verification is for a recovery
+  #  @account.activated? => true
   def verify
     account = Account.find_by_id_and_verification_key(params[:id], params[:verification_key])
     if account
