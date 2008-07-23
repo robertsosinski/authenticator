@@ -44,9 +44,9 @@
   <% letter_options.each do |letter| %>
     <% if params[:letter] == letter %>
       <span class="current"><%= letter %></span>
-    <% else %>
-      <%= link_to letter, accounts_path(:letter => letter)%>
-    <% end %>
+    <% else -%>
+      <%= link_to letter, accounts_path(:letter => letter) %>
+    <% end -%>
   <% end %>
 
 	Showing <%= @accounts.size %> out of <%= @authenticated_site.accounts.size %> accounts

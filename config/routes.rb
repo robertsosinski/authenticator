@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.root :controller => 'accounts', :action => 'index'
+  
   map.resources :accounts,
                 :collection => {:recover => :post},
                 :member => {:activate => :put, :verify => :put, :ban => :put, :unban => :put}
