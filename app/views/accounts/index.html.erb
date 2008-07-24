@@ -4,9 +4,11 @@
 	
 	<tr>
 		<th>Email Address</th>
-		<th width="200px">Created</th>
-		<th width="100px">Activated?</th>
-		<th width="100px">Banned?</th>
+		<th width="175px">Created</th>
+		<th width="175px">Last Login</th>
+		<th width="75px">Logins</th>
+		<th width="75px">Activated?</th>
+		<th width="75px">Banned?</th>
 	</tr>
 	
 	<% for account in @accounts %>
@@ -14,6 +16,8 @@
 	<tr id="account_<%= account.id %>">
 		<td><%= link_to account.email_address, edit_account_path(account) %>
 		<td><%= account.created_at.to_s(:standard) %></td>
+		<td><%= account.logins.empty? ? "None Yet" : account.logins.last.created_at.to_s(:standard) %></td>
+		<td><%= account.logins.size %></td>
 
 		<td>
 			<span id="activate_account_<%= account.id %>" <%= 'style="display: none;"' if account.activated? %>>
