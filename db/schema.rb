@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080717011848) do
+ActiveRecord::Schema.define(:version => 20080724201823) do
 
   create_table "accounts", :force => true do |t|
     t.string   "email_address"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(:version => 20080717011848) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "site_id",            :limit => 11
+    t.integer  "logins_count",       :limit => 11, :default => 0
   end
 
   create_table "logins", :force => true do |t|

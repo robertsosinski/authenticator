@@ -1,3 +1,2 @@
 login_for_alice:
   account: alice
-  created_at: <%= Time.now %>

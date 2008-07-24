@@ -6,6 +6,7 @@ alice: # activated
   encrypted_password: b572d924274989fa4d6bb336ea5d85bc3b33d2ea26a44400aeab029b7c9baddb
   activated: true
   banned: false
+  logins_count: 1
 
 bob: # pending activation
   site: capansis
@@ -16,6 +17,7 @@ bob: # pending activation
   verification_key: 6a57a7d7430418b3fb579c9c7558ec2719aa9edb37b6940a381d72af16c3619e
   activated: false
   banned: false
+  logins_count: 0
 
 casey: # pending recovery
   site: capansis
@@ -26,6 +28,7 @@ casey: # pending recovery
   verification_key: 9c4b8fe151bf47f60dad8522f694c4126022162f44c9dd3bc7853a5211717a07
   activated: true
   banned: false
+  logins_count: 0
 
 mallory: # banned
   site: capansis
@@ -35,6 +38,7 @@ mallory: # banned
   encrypted_password: ef71e259b65ff0fc5dfd2101a194d3abe22a2114030e9a7487b8d4104b2c697f
   activated: true
   banned: true
+  logins_count: 0
   
 numbers: # testing the letter based pagination method
   site: capansis
@@ -44,8 +48,9 @@ numbers: # testing the letter based pagination method
   encrypted_password: 77e01bc85a50f68cd3efc00c92bb392e2c0937eb30fecd76bedf8f72679fe68f
   activated: true
   banned: false
+  logins_count: 0
 
-alice_2: #activated
+alice_ibm: #activated
   site: ibm
   email_address: alice@capansis.com
   salt: 2y00A7QS
@@ -53,3 +58,4 @@ alice_2: #activated
   encrypted_password: 513346563439bc03e12681d21eefc205f6f54ab5cf6fefa11592644caee7f5d6
   activated: true
   banned: false
+  logins_count: 0

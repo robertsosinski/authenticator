@@ -2,7 +2,7 @@
 class Login < ActiveRecord::Base
   attr_accessor :site_id, :email_address, :password, :match
   
-  belongs_to :account
+  belongs_to :account, :counter_cache => true
   
   before_validation :authenticate_account
   
