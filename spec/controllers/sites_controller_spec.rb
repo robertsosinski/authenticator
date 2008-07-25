@@ -2,9 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe SitesController do
   before(:each) do
-    controller.stub!(:authenticate).and_return(true)
+    @request.env["HTTP_AUTHORIZATION"] = "Basic"
     
-    Site.stub!(:authenticate).and_return(@@site = mock_model(Site))
+    Site.should_receive(:authenticate).and_return(@authenticated_site = mock_model(Site))
   end
   
   describe 'the edit action' do

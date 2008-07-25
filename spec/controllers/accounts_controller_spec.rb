@@ -2,9 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe AccountsController do
   before(:each) do
-    controller.stub!(:authenticate).and_return(true)
+    @request.env["HTTP_AUTHORIZATION"] = "Basic"
     
-    Site.stub!(:authenticate).and_return(@@site = mock_model(Site))
+    Site.should_receive(:authenticate).and_return(@authenticated_site = mock_model(Site))
   end
   
   describe 'the index action' do
@@ -49,7 +49,7 @@ describe AccountsController do
     describe 'when given valid attributes' do
       before(:each) do
         Account.stub!(:new).and_return(@account = mock_model(Account, :save => true))
-        @account.should_receive(:site=).with(@@site)
+        @account.should_receive(:site=).with(@authenticated_site)
         Mailer.should_receive(:deliver_activation).and_return(true)
       end
       
@@ -77,7 +77,7 @@ describe AccountsController do
     describe 'when given invalid attributes' do    
       before(:each) do
         Account.stub!(:new).and_return(@account = mock_model(Account, :save => false))
-        @account.should_receive(:site=).with(@@site)
+        @account.should_receive(:site=).with(@authenticated_site)
       end
       
       describe 'in html format' do

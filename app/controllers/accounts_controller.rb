@@ -1,6 +1,8 @@
 # Handles the interaction between a user and the Account model.  This controller can be interacted with through it's 
 # XML based API or it's HTML based administartion panel.
 class AccountsController < ApplicationController
+  before_filter :authenticate
+  
   # Returns a collection of filtered first letter of an accounts email address.
   #
   # API via ActiveResource:
@@ -8,7 +10,7 @@ class AccountsController < ApplicationController
   #  Account.find(:all, :params => {:letter => params[:letter]}) => Collection of Accounts
   def index
     params[:letter] ||= 'a'
-    @accounts = Account.find_by_site_id_and_letter(@@site.id, params[:letter])
+    @accounts = Account.find_by_site_id_and_letter(@authenticated_site.id, params[:letter])
     respond_to do |format|
       format.html
       format.xml {render :xml => @accounts}  
@@ -21,7 +23,7 @@ class AccountsController < ApplicationController
   #
   #  Account.find(params[:id]) => Specified Account
   def show
-    @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
+    @account = Account.find(params[:id], :conditions => {:site_id => @authenticated_site.id})
     respond_to do |format|
       format.html{head :status => :unsupported_media_type}
       format.xml {render :xml => @account}
@@ -35,9 +37,9 @@ class AccountsController < ApplicationController
   #  @account = Account.new(params[:account]) => New Account
   def create
     @account = Account.new(params[:account])
-    @account.site = @@site
+    @account.site = @authenticated_site
     if @account.save
-      Mailer.deliver_activation(:site => @@site, :account => @account)
+      Mailer.deliver_activation(:site => @authenticated_site, :account => @account)
       respond_to do |format|
         format.html{head :unsupported_media_type}
         format.xml {render :xml => @account, :status => :created, :location => @account}
@@ -87,7 +89,7 @@ class AccountsController < ApplicationController
   
   # Returns a form to edit the specified Account.  Used only by the admin panel.
   def edit
-    @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
+    @account = Account.find(params[:id], :conditions => {:site_id => @authenticated_site.id})
     respond_to do |format|
       format.html
       format.xml {head :unsupported_media_type}
@@ -101,7 +103,7 @@ class AccountsController < ApplicationController
   #  @account = Account.find(params[:id]).load(params[:account]) => Account loaded with new attributes
   #  @account.save => Updated Account
   def update
-    @account = Account.find(params[:id], :conditions => {:site_id => @@site.id})
+    @account = Account.find(params[:id], :conditions => {:site_id => @authenticated_site.id})
     if @account.update_attributes(params[:account])
       respond_to do |format|
         format.html do
@@ -132,7 +134,7 @@ class AccountsController < ApplicationController
     account = Account.find_by_email_address(params[:email_address])
     if account
       account.is_pending_recovery!
-      Mailer.deliver_recovery(:site => @@site, :account => account)
+      Mailer.deliver_recovery(:site => @authenticated_site, :account => account)
       head :ok
     else
       head :not_found

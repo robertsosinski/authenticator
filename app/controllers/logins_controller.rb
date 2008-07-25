@@ -1,6 +1,10 @@
 # Handles all interaction between a user and the Login model.  This controller can only be interacted with through it's 
 # XML based API.
-class LoginsController < ApplicationController  
+class LoginsController < ApplicationController    
+  before_filter :authenticate
+  
+  # before_filter :authenticate
+  
   # Creates and returns a new Login object.
   #
   # API method:
@@ -12,7 +16,7 @@ class LoginsController < ApplicationController
   #  @login.save => "false" and the errors
   def create
     @login = Login.new(params[:login])
-    @login.site_id = @@site.id
+    @login.site_id = @authenticated_site.id
     if @login.save
       render :xml => @login, :status => :created, :location => @login
     else
