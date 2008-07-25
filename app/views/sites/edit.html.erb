@@ -16,13 +16,29 @@
 	</fieldset>
 	
 	<fieldset>
+		<legend>Invitation Letter</legend>	
+
+		<%= f.label :invitation_subject %><br />
+		<%= f.text_field :invitation_subject %><br />
+		
+		<%= f.label :invitation_letter %><br />
+		<%= f.text_area :invitation_letter, :cols => '85' %><br />
+		
+		The Temporary Password you provided for the new account: <code>{{temporary_password}}</code>
+		
+	</fieldset>
+	
+	<fieldset>
 		<legend>Activation Letter</legend>	
 
 		<%= f.label :activation_subject %><br />
 		<%= f.text_field :activation_subject %><br />
 		
 		<%= f.label :activation_letter %><br />
-		<%= f.text_area :activation_letter %><br />
+		<%= f.text_area :activation_letter, :cols => '85' %><br />
+		
+		The account ID needed to find the account: <code>{{account_id}}</code><br />
+		The verification key needed to verify the account: <code>{{verification_key}}</code>
 		
 	</fieldset>
 	
@@ -33,7 +49,10 @@
 		<%= f.text_field :recovery_subject %><br />
 		
 		<%= f.label :recovery_letter %><br />
-		<%= f.text_area :recovery_letter %><br />
+		<%= f.text_area :recovery_letter, :cols => '85' %><br />
+		
+		The account ID needed to find the account: <code>{{account_id}}</code><br />
+		The verification key needed to verify the account: <code>{{verification_key}}</code>
 		
 	</fieldset>
 	

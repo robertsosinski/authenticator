@@ -30,29 +30,50 @@ class AccountsController < ApplicationController
     end
   end
   
+  # Returns a form to create a new Account.  Used by the admin panel.
+  def new
+    @account = Account.new
+    respond_to do |format|
+      format.html
+      format.xml {head :unsupported_media_type}
+    end
+  end
+  
   # Creates a new Account and returns it to the user.
   #
   # API via ActiveResource:
   #
   #  @account = Account.new(params[:account]) => New Account
+  #
+  # NOTE:
+  #
+  # The create action through the API will create a new, unactivated account and send an activation letter.
+  # The create action through the admin panel will create a new activated account and send an invitation letter with the password chosen.
   def create
     @account = Account.new(params[:account])
     @account.site = @authenticated_site
     if @account.save
-      Mailer.deliver_activation(:site => @authenticated_site, :account => @account)
       respond_to do |format|
-        format.html{head :unsupported_media_type}
-        format.xml {render :xml => @account, :status => :created, :location => @account}
+        format.html do
+          @account.activate!
+          Mailer.deliver_invitation(:site => @authenticated_site, :account => @account, :temporary_password => params[:account][:password])
+          flash[:notice] = "Invitation sent to #{@account.email_address}."
+          redirect_to(new_account_path)
+        end
+        format.xml do
+          Mailer.deliver_activation(:site => @authenticated_site, :account => @account)
+          render :xml => @account, :status => :created, :location => @account
+        end
       end
     else
       respond_to do |format|
-        format.html{head :unsupported_media_type}
+        format.html{render :action => 'new'}
         format.xml {render :xml => @account.errors, :status => :unprocessable_entity}
       end
     end
   end
   
-  # Activates the specified account.  Used only by the admin panel.
+  # Activates the specified account.  Used by the admin panel.
   def activate
     @account = Account.find(params[:id])
     @account.activate!
@@ -87,7 +108,7 @@ class AccountsController < ApplicationController
     end
   end
   
-  # Returns a form to edit the specified Account.  Used only by the admin panel.
+  # Returns a form to edit the specified Account.  Used by the admin panel.
   def edit
     @account = Account.find(params[:id], :conditions => {:site_id => @authenticated_site.id})
     respond_to do |format|
@@ -108,7 +129,7 @@ class AccountsController < ApplicationController
       respond_to do |format|
         format.html do
           flash[:notice] = "Account Updated."
-          redirect_to(accounts_path)
+          redirect_to(edit_account_path(@account))
         end
         format.xml {render :xml => @account}
       end

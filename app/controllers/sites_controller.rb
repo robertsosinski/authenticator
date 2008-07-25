@@ -12,7 +12,7 @@ class SitesController < ApplicationController
   def update
     @site = Site.find(@authenticated_site.id)
     if @site.update_attributes(params[:site])
-      flash[:notice] = "Your site options have been updated"
+      flash[:notice] = "Your site options have been updated."
       redirect_to(accounts_path)
     else
       render(:action => 'edit')

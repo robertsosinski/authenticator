@@ -1,0 +1,23 @@
+<h2>Send Invitation</h2>
+
+<% form_for @account do |f| %>
+
+	<%= f.error_messages %>
+
+	<fieldset>
+		<legend>Credentials</legend>
+
+		<%= f.label :email_address %><br />
+		<%= f.text_field :email_address %><br />
+
+		<%= f.label :password %><br />
+		<%= f.password_field :password, :value => '' %><br />
+
+		<%= f.label :password_confirmation %><br />
+		<%= f.password_field :password_confirmation, :value => '' %><br />
+		
+	</fieldset>
+	
+	<%= f.submit "Update Account" %>
+
+<% end %>

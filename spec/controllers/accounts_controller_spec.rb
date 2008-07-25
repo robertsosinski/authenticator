@@ -50,21 +50,26 @@ describe AccountsController do
       before(:each) do
         Account.stub!(:new).and_return(@account = mock_model(Account, :save => true))
         @account.should_receive(:site=).with(@authenticated_site)
-        Mailer.should_receive(:deliver_activation).and_return(true)
       end
       
       describe 'in html format' do
         before(:each) do
-          post :create
+          @account.should_receive(:activate!).and_return(true)
+          @account.stub!(:email_address).and_return("name@domain.com")
+          Mailer.should_receive(:deliver_invitation).and_return(true)
+          
+          post :create, {:account => {:password => 'temporary password'}}
         end
         
-        it 'should yield Unsupported Media Type error' do
-          response.should be_unsupported_media_type
+        it 'should be sent an account invitation' do
+          response.should redirect_to(new_account_path)
         end
       end
       
       describe 'in xml format' do
-        before(:each) do          
+        before(:each) do
+          Mailer.should_receive(:deliver_activation).and_return(true)
+          
           post :create, :format => 'xml'
         end
         
@@ -85,8 +90,8 @@ describe AccountsController do
           post :create
         end
         
-        it 'should yield Unsupported Media Type error' do
-          response.should be_unsupported_media_type
+        it 'render the new template with validation errors' do
+          response.should render_template(:new)
         end
       end
       
@@ -200,7 +205,7 @@ describe AccountsController do
         end
 
         it 'should be redirect to the accounts index' do
-          response.should redirect_to(accounts_path)
+          response.should redirect_to(edit_account_path(@account))
         end
       end
       

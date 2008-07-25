@@ -4,8 +4,10 @@ capansis:
   api_key: 8a53afd0a55ef8f36779d74582d30cdbe903e425
   email_address: support@capansis.com
   support_title: Capansis Support
-  activation_subject: Welcome To Capansis
+  invitation_subject: Welcome To Capansis
+  activation_subject: Please Verify Your Email Address
   recovery_subject: Please Change Your Password
+  invitation_letter: Welcome, your temporary password is "{{temporary_password}}".
   activation_letter: Click <a href="http://capansis.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to activate your account.
   recovery_letter: Click <a href="http://capansis.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to recover your account.
 
@@ -15,7 +17,9 @@ ibm:
   api_key: 9b5c0c92731f33fe87c25bdd1583cf2558c508f5
   email_address: support@ibm.com
   support_title: IBM Support
-  activation_subject: Welcome To IBM
+  invitation_subject: Welcome To IBM
+  activation_subject: Please Verify Your Email Address
   recovery_subject: Please Change Your Password
+  invitation_letter: Welcome, your temporary password is "{{temporary_password}}".
   activation_letter: Click <a href="http://ibm.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to activate your account.
   recovery_letter: Click <a href="http://ibm.com/accounts/{{account_id}}/verify/{{verification_key}}">here</a> to recover your account.
