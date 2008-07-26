@@ -47,8 +47,8 @@ class AccountsController < ApplicationController
   #
   # NOTE:
   #
-  # The create action through the API will create a new, unactivated account and send an activation letter.
-  # The create action through the admin panel will create a new activated account and send an invitation letter with the chosen password.
+  # The create action through the API will create a new, unactivated account and send an activation letter with a verification link.
+  # The create action through the admin panel will create a new, activated account and send an invitation letter with the password.
   def create
     @account = Account.new(params[:account])
     @account.site = @authenticated_site
