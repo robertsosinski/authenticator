@@ -7,13 +7,9 @@ class LoginsController < ApplicationController
   
   # Creates and returns a new Login object.
   #
-  # API method:
+  # API via ActiveResource:
   #
-  #  @login = Login.new(params[:account]) => New Login
-  #  # if valid
-  #  @login.save => "true" and a copy of the compleated login
-  #  # if invalid
-  #  @login.save => "false" and the errors
+  #  @login = Login.new(params[:account]) => New Login or Validation Errors
   def create
     @login = Login.new(params[:login])
     @login.site_id = @authenticated_site.id

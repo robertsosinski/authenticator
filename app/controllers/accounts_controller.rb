@@ -43,12 +43,12 @@ class AccountsController < ApplicationController
   #
   # API via ActiveResource:
   #
-  #  @account = Account.new(params[:account]) => New Account
+  #  @account = Account.new(params[:account]) => New Account or Validation Errors
   #
   # NOTE:
   #
   # The create action through the API will create a new, unactivated account and send an activation letter with a verification link.
-  # The create action through the admin panel will create a new, activated account and send an invitation letter with the password.
+  # The create action through the admin panel will create a new, activated account and send an invitation letter with a temporary password.
   def create
     @account = Account.new(params[:account])
     @account.site = @authenticated_site

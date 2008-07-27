@@ -3,12 +3,12 @@
 class SitesController < ApplicationController
   before_filter :authenticate
   
-  # Returns the specified Site.
+  # Returns a form to edit the specified Site.  Used by the admin panel.
   def edit
     @site = Site.find(@authenticated_site.id)
   end
   
-  # Updates and returns the specified Site.
+  # Updates and returns the specified Site.  Used by the admin panel.
   def update
     @site = Site.find(@authenticated_site.id)
     if @site.update_attributes(params[:site])
