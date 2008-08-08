@@ -103,7 +103,7 @@ NOTE: Users will not be able to login through the authentication service until t
 
 To activate or recover an account, pass a PUT request to an Accounts resource member with a verification key.
 
-  curl -X PUT -i -u domain:api_key http(s)://localhost:3001/accounts/842437485.xml?verification_key=6a57a7d7430418b3fb579c9c7558ec2719aa9edb37b6940a381d72af16c3619e
+  curl -X PUT -i -u domain:api_key http(s)://authentication.capansis.net/accounts/12345.xml?verification_key=6a57a7d7430418b3fb579c9c7558ec2719aa9edb37b6940a381d72af16c3619e
 
   @account = Account.find(12345)
   @account.put(:verify, :verification_key => "6a57a7d7430418b3fb579c9c7558ec2719aa9edb37b6940a381d72af16c3619e")
@@ -144,7 +144,7 @@ representation of the errors.
 To have a recovery letter with verification link sent to an account owners email address of record, pass a POST request to the Accounts
 resource with an email address.
 
-  curl -X POST -i -u domain:api_key -d "email_address=name@domain.com" http(s)://localhost:3001/accounts/recover.xml
+  curl -X POST -i -u domain:api_key -d "email_address=name@domain.com" http(s)://authentication.capansis.net/accounts/recover.xml
 
   Account.post(:recover, :email_address => name@domain.com)
 
@@ -159,7 +159,7 @@ There is one way to interact with the Account resource API.
 
 To verify an accounts credentials and create a new Login, pass a POST request to the Logins resource with properly formated login data.
 
-  curl -X POST -i -u domain.com:api_key -d "login[email_address]=name@domain.com&login[password]=secret" http(s)://localhost:3001/logins.xml
+  curl -X POST -i -u domain.com:api_key -d "login[email_address]=name@domain.com&login[password]=secret" http(s)://authentication.capansis.net/logins.xml
 
   @login = Login.new(params[:login])
   @login.save
