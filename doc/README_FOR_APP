@@ -1,6 +1,6 @@
 = Summary
 
-Capansis Authentication is web service that allows you to easily implement a very secure and robust authentication system into your 
+Capansis Authentication is a web service that allows you to easily implement a very secure and robust authentication system into your 
 application.  It provides a fully RESTful API using XML over HTTP and is secured using HTTP Basic Authentication.  This document describes 
 how to interact with the Capansis Authentication service using cURL and ActiveRecord.
 
