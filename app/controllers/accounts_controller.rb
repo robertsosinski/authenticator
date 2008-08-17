@@ -3,7 +3,7 @@
 class AccountsController < ApplicationController
   before_filter :authenticate
   
-  # Returns a collection of filtered first letter of an accounts email address.
+  # Returns a collection of Accounts filtered by the first letter of the email address.
   #
   # API via ActiveResource:
   #

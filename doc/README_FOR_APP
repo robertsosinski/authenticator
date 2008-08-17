@@ -58,17 +58,15 @@ There are seven ways to interact with the Account resource API.
 
 == Getting a Collection of Accounts
 
-To get a full collection of all accounts, pass a GET request to the Accounts resource.
-
-  curl -X GET -i -u domain:api_key http(s)://authentication.capansis.com/accounts.xml
-
-  Account.find(:all)
-
-You can also filter the collection by the first letter in an accounts email address by passing the letter parameter.
+To get a full collection of accounts, filtered by the first letter in an accounts email address, pass a GET request to the Accounts resource with the letter parameter.
 
   curl -X GET -i -u domain:api_key http(s)://authentication.capansis.com/accounts.xml?letter=a
 
   Account.find(:all, :params => {:letter => "a"})
+
+*NOTE*:
+
+If no letter parameter is given, Capansis Authentication will default to the letter "a".
 
 == Getting a Single Account
 
@@ -97,7 +95,9 @@ representation of the errors.
 After successful creation, the authentication service will send a verification letter to the email address registered.  This letter will 
 include a verification link, that once clicked, will activate the account and log the user into the system.
 
-NOTE: Users will not be able to login through the authentication service until their account is activated.
+*NOTE*:
+
+Users will not be able to login through the authentication service until their account is activated.
 
 == Verifying an Accounts Email Address
 
@@ -111,7 +111,7 @@ To activate or recover an account, pass a PUT request to an Accounts resource me
 If the account and verification key are valid, the authentication service will return a HTTP 200 OK.  Otherwise, it will return a 
 HTTP 404 Not Found.
 
-*Note*:
+*NOTE*:
 
 You can check if the Account is being activated or recovered by checking the activated attribute.  This is helpful if you want
 activating users to be redirected to a "Home" page, while recovering users to be redirected to a "Change Password" page.
