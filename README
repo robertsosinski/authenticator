@@ -1,9 +1,9 @@
 = Summary
 
-Authenticator is a web service that allows you to easily implement a very secure and robust
-authentication system into your application.  It provides a fully RESTful API using XML over HTTP
-and is secured using HTTP Basic Authentication.  This document describes how to interact with the
-Authenticator service using cURL and ActiveRecord.
+Authenticator (originally called Capansis Authentication) is a web service that allows you to easily
+implement a very secure and robust authentication system into your application.  It provides a fully
+RESTful API using XML over HTTP and is secured using HTTP Basic Authentication.  This document
+describes how to interact with the Authenticator service using cURL and ActiveRecord.
 
 Throughout this document, you will see code examples.  There will always be two, first a cURL 
 example, followed by an ActiveResource example.
